@@ -148,3 +148,23 @@ test('the compatibility loader returns the project and remains read-only', () =>
   assert.equal(loadProject(saved.storage).name, project.name);
   saved.assertUnchanged();
 });
+
+
+test('version-1 numeral projects remain compatible and Unicode projects normalize complete graphemes', () => {
+  const project = freshProject();
+  project.scenes[0].digit = 7;
+  assert.equal(validateProject(project).scenes[0].digit, '7');
+  for (const digit of ['A', 'e\u0301', 'Ω', 'Ж', '€', 'q\u0301']) {
+    const imported = validateProject({ ...project, scenes: [{ ...project.scenes[0], digit }] });
+    assert.equal(imported.version, 1);
+    assert.equal(imported.scenes[0].digit, digit.normalize('NFC'));
+    assert.equal(validateProject(JSON.parse(JSON.stringify(imported))).scenes[0].digit, imported.scenes[0].digit);
+  }
+  for (const digit of ['AB', '', ' ', '😀', '漢', '\u0301']) {
+    const invalid = { ...project, scenes: [{ ...project.scenes[0], digit }] };
+    assert.throws(() => validateProject(invalid));
+    const raw = JSON.stringify(invalid), saved = storedProject(raw);
+    assert.equal(loadProjectState(saved.storage).recoveryRaw, raw);
+    saved.assertUnchanged();
+  }
+});

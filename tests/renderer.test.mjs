@@ -1,15 +1,21 @@
-import test from 'node:test';
+import test, { after } from 'node:test';
+import { loadGlyphs } from '../src/glyphs.js';
+import { installGlyphEnvironment } from './helpers/glyph-environment.mjs';
 import assert from 'node:assert/strict';
 import { DEFAULT_SCENES, EFFECTS, getSceneAtTime, getTotalDuration, getLoopTime, renderProject, renderScene, sampleReference } from '../src/renderer.js';
 import { REFERENCE_TRACKS, REFERENCE_BOUNDS } from '../src/reference-frames.js';
 
+const restoreGlyphEnvironment = installGlyphEnvironment();
+after(restoreGlyphEnvironment);
+await loadGlyphs([...Array.from({ length: 10 }, (_, i) => String(i)), 'A', 'é', 'Ω', 'q\u0301', '-', '—', '_']);
+
 function context(width = 1920, height = 1080) {
   const operations = [];
   const ctx = { canvas: { width, height }, operations };
-  for (const method of ['save', 'restore', 'translate', 'rotate', 'scale', 'fillRect', 'fillText', 'beginPath', 'rect', 'clip']) {
+  for (const method of ['save', 'restore', 'translate', 'rotate', 'scale', 'fillRect', 'fillText', 'drawImage', 'beginPath', 'rect', 'clip']) {
     ctx[method] = (...args) => {
       assert.equal(args.filter(arg => typeof arg === 'number').every(Number.isFinite), true, `${method} received invalid coordinates`);
-      operations.push([method, ctx.fillStyle, ...args]);
+      operations.push([method, method === 'drawImage' ? args[0].color : ctx.fillStyle, ...args]);
     };
   }
   ctx.measureText = () => ({ actualBoundingBoxAscent: 72, actualBoundingBoxDescent: 0, actualBoundingBoxLeft: 0, actualBoundingBoxRight: 48, width: 50 });
@@ -71,12 +77,11 @@ test('every preset renders one numeral, optionally partitioned into four pieces,
           renderScene(second, scene, time);
           assert.deepEqual(first.operations, second.operations);
           const pieces = effect.id === 'splitFour' && time > 0 && time < 0.396 ? 4 : 1;
-          assert.equal(first.operations.filter(([method]) => method === 'fillText').length, pieces,
+          assert.equal(first.operations.filter(([method]) => method === 'drawImage').length, pieces,
             `${effect.id}: digit ${digit} at ${time} has an unexpected number of pieces`);
-          if (pieces === 4) assert.equal(first.operations.filter(([method]) => method === 'clip').length, 4);
           assert.equal(first.operations.filter(([method]) => method === 'fillRect').length, 1,
             `${effect.id} must only paint the background before its glyph`);
-          const coloredPaint = first.operations.filter(([method]) => ['fillRect', 'fillText'].includes(method));
+          const coloredPaint = first.operations.filter(([method]) => ['fillRect', 'drawImage'].includes(method));
           assert.deepEqual(coloredPaint.map(([, color]) => color), [scene.bg, ...Array(pieces).fill(scene.fg)]);
         }
       }
@@ -88,25 +93,23 @@ test('splitFour partitions the whole numeral into unique quarters and rejoins be
   const scene = { ...DEFAULT_SCENES[0], effect: 'splitFour', digit: '0' };
   const peak = context();
   renderScene(peak, scene, 0.2);
-  const clips = peak.operations.filter(([method]) => method === 'rect').map(row => row.slice(2));
-  const centers = peak.operations.filter(([method]) => method === 'translate').slice(2).map(row => row.slice(2));
-  const relativeClips = clips.map(([x, y, w, h], i) => [
-    Math.round(x - centers[i][0]), Math.round(y - centers[i][1]), Math.round(w), Math.round(h),
+  const draws = peak.operations.filter(([method]) => method === 'drawImage').map(row => row.slice(2));
+  assert.equal(draws.length, 4);
+  const mask = draws[0][0], halfWidth = mask.width / 2, halfHeight = mask.height / 2;
+  assert.ok(draws.every(draw => draw[0] === mask));
+  assert.deepEqual(draws.map(draw => draw.slice(1, 5)), [
+    [0, 0, halfWidth, halfHeight], [halfWidth, 0, halfWidth, halfHeight],
+    [0, halfHeight, halfWidth, halfHeight], [halfWidth, halfHeight, halfWidth, halfHeight],
   ]);
-  // Natural painted bounds are 48/72 wide; Inter needs no extra widening.
-  assert.deepEqual(relativeClips, [
-    [-180, -270, 180, 270], [0, -270, 180, 270],
-    [-180, 0, 180, 270], [0, 0, 180, 270],
-  ]);
-  assert.ok(clips[1][0] - (clips[0][0] + clips[0][2]) > 150);
-  assert.ok(clips[2][1] - (clips[0][1] + clips[0][3]) > 150);
+  assert.ok(draws[1][5] - (draws[0][5] + draws[0][7]) > 150);
+  assert.ok(draws[2][6] - (draws[0][6] + draws[0][8]) > 150);
   const start = context(), closed = context(), finalFrame = context();
   renderScene(start, scene, 0);
   renderScene(closed, scene, 0.4);
   renderScene(finalFrame, scene, 13 / 30);
   assert.deepEqual(closed.operations, start.operations);
   assert.deepEqual(finalFrame.operations, start.operations);
-  assert.equal(closed.operations.filter(([method]) => method === 'fillText').length, 1);
+  assert.equal(closed.operations.filter(([method]) => method === 'drawImage').length, 1);
 });
 
 test('new projects start with two blocks at the original GIF pace', () => {
@@ -174,4 +177,38 @@ test('the second-zero variation has a distinct diagonal finish and a visible swe
   const source = REFERENCE_TRACKS['8'].samples;
   assert.equal(pose('cluster', 0).angle, source[0][4]);
   assert.equal(pose('cluster', 0.45).angle, source.at(-1)[4]);
+});
+
+
+test('Unicode preview and export use the same loaded cluster mask without numeral substitution', () => {
+  for (const digit of ['A', 'é', 'Ω', 'q\u0301']) {
+    const scene = { ...DEFAULT_SCENES[0], digit };
+    const preview = context(), video = context();
+    renderScene(preview, scene, 0.18);
+    renderProject(video, [scene], 0.18);
+    assert.deepEqual(preview.operations, video.operations);
+    const draws = preview.operations.filter(([method]) => method === 'drawImage');
+    assert.equal(draws.length, 1);
+    assert.equal(draws[0][2].character, digit);
+  }
+  assert.throws(() => renderScene(context(), { ...DEFAULT_SCENES[0], digit: '😀' }), /niet beschikbaar/);
+  assert.throws(() => renderScene(context(), { ...DEFAULT_SCENES[0], digit: 'Б' }), /nog niet geladen/);
+});
+
+
+test('short punctuation retains its Inter-relative height in both whole and split rendering', () => {
+  for (const digit of ['-', '—', '_']) {
+    const base = { ...DEFAULT_SCENES[0], effect: 'splitFour', digit };
+    const whole = context(), split = context(), number = context();
+    renderScene(whole, base, 0);
+    renderScene(split, base, 0.2);
+    renderScene(number, { ...base, digit: '0' }, 0);
+    const wholeDraw = whole.operations.find(([method]) => method === 'drawImage');
+    const numberDraw = number.operations.find(([method]) => method === 'drawImage');
+    assert.equal(wholeDraw[6] / numberDraw[6], 10 / 72);
+    const pieces = split.operations.filter(([method]) => method === 'drawImage');
+    assert.equal(pieces.length, 4);
+    assert.ok(pieces.every(piece => Math.abs(piece[10] * 2 - wholeDraw[6]) < 1e-8));
+    assert.equal(numberDraw[2].characterScale, 1);
+  }
 });

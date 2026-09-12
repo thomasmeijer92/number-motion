@@ -12,4 +12,4 @@ python3 generate.py --height 700
 
 The helper renders the font at a large size, crops natural painted bounds and uniformly downsamples to 700px height. It does not stretch, trace or redraw any outline. The tiny per-digit width rounding is recorded by the output dimensions and aspect ratio in `manifest.json`.
 
-`contact-sheet.png` is only a visual index. Runtime use should load `0.png` through `9.png` and tint the white pixels through the alpha channel.
+`contact-sheet.png` is a visual index. These ten PNGs remain reproducible font specimens; the editor now generates character masks dynamically from the Inter subsets and does not load this static set.

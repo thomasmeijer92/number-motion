@@ -1,4 +1,5 @@
-import { getGlyph } from './glyphs.js';
+import { getGlyph, hasGlyphs } from './glyphs.js';
+import { normalizeCharacter } from './characters.js';
 import { REFERENCE_BOUNDS, REFERENCE_TRACKS } from './reference-frames.js';
 
 export const SOURCE_DURATION = { single: 0.45, duo: 0.45, orbit: 0.45, quad: 0.45, pattern: 0.45, scatter: 0.45, reveal: 0.45, cluster: 0.45, spinSweep: 0.45, splitFour: 0.45, scroll: 0.45, rings: 0.42 };
@@ -71,34 +72,16 @@ export function getSceneAtTime(scenes = [], time = 0) {
 function glyph(ctx, digit, x, y, height, color, angle = 0, stretchX = 1, stretchY = 1) {
   if (height <= 0.1) return;
   const mask = getGlyph(digit, color);
-  if (mask) {
-    const width = height * mask.width / mask.height;
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(angle);
-    ctx.scale(stretchX, stretchY);
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
-    ctx.drawImage(mask, -width / 2, -height / 2, width, height);
-    ctx.restore();
-    return;
-  }
+  if (!mask) throw new Error('Het teken is nog niet geladen. Probeer opnieuw.');
+  height *= mask.characterScale;
+  const width = height * mask.width / mask.height;
   ctx.save();
-  ctx.font = '500 100px "Inter", Arial, sans-serif';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'alphabetic';
-  const metrics = ctx.measureText(digit);
-  const ascent = metrics.actualBoundingBoxAscent || 72;
-  const descent = metrics.actualBoundingBoxDescent || 0;
-  const left = metrics.actualBoundingBoxLeft || 0;
-  const right = metrics.actualBoundingBoxRight || metrics.width;
-  const fit = height / (ascent + descent);
   ctx.translate(x, y);
   ctx.rotate(angle);
-  // Match the masks: use natural Inter proportions and centre by painted bounds.
-  ctx.scale(fit * stretchX, fit * stretchY);
-  ctx.fillStyle = color;
-  ctx.fillText(digit, (left - right) / 2, (ascent - descent) / 2);
+  ctx.scale(stretchX, stretchY);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(mask, -width / 2, -height / 2, width, height);
   ctx.restore();
 }
 
@@ -207,28 +190,18 @@ function renderSplitFour(ctx, s, p, t, w, h) {
     return;
   }
   const mask = getGlyph(s.digit, s.fg);
-  ctx.font = '500 100px "Inter", Arial, sans-serif';
-  const metrics = ctx.measureText(s.digit);
-  const fallbackRatio = ((metrics.actualBoundingBoxLeft || 0)
-    + (metrics.actualBoundingBoxRight || metrics.width))
-    / ((metrics.actualBoundingBoxAscent || 72) + (metrics.actualBoundingBoxDescent || 0));
-  const width = height * (mask ? mask.width / mask.height : fallbackRatio);
+  if (!mask) throw new Error('Het teken is nog niet geladen. Probeer opnieuw.');
+  const characterHeight = height * mask.characterScale;
+  const width = characterHeight * mask.width / mask.height;
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
   for (const [column, row] of [[0, 0], [1, 0], [0, 1], [1, 1]]) {
     const cx = w / 2 + (column * 2 - 1) * gap;
     const cy = h / 2 + (row * 2 - 1) * gap;
     const x = cx + (column - 1) * width / 2;
-    const y = cy + (row - 1) * height / 2;
-    if (mask) {
-      ctx.drawImage(mask, column * mask.width / 2, row * mask.height / 2,
-        mask.width / 2, mask.height / 2, x, y, width / 2, height / 2);
-    } else {
-      ctx.save();
-      ctx.beginPath(); ctx.rect(x, y, width / 2, height / 2); ctx.clip();
-      glyph(ctx, s.digit, cx, cy, height, s.fg);
-      ctx.restore();
-    }
+    const y = cy + (row - 1) * characterHeight / 2;
+    ctx.drawImage(mask, column * mask.width / 2, row * mask.height / 2,
+      mask.width / 2, mask.height / 2, x, y, width / 2, characterHeight / 2);
   }
 }
 
@@ -244,9 +217,10 @@ export function renderScene(ctx, scene, localTime = 0, width = ctx.canvas.width,
   if (!ctx || width <= 0 || height <= 0) return;
   const s = {
     ...scene,
-    digit: /^[0-9]$/.test(String(scene?.digit)) ? String(scene.digit) : '0',
+    digit: normalizeCharacter(scene?.digit),
     bg: scene?.bg || '#FFBB00', fg: scene?.fg || '#2A1200',
   };
+  if (!hasGlyphs([s.digit])) throw new Error('Het teken is nog niet geladen. Probeer opnieuw.');
   ctx.save();
   ctx.globalAlpha = 1;
   ctx.globalCompositeOperation = 'source-over';
