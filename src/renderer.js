@@ -84,7 +84,7 @@ function glyph(ctx, digit, x, y, height, color, angle = 0, stretchX = 1, stretch
     return;
   }
   ctx.save();
-  ctx.font = '800 100px "Barlow Condensed", "Arial Narrow", Arial, sans-serif';
+  ctx.font = '500 100px "Inter", Arial, sans-serif';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'alphabetic';
   const metrics = ctx.measureText(digit);
@@ -95,9 +95,8 @@ function glyph(ctx, digit, x, y, height, color, angle = 0, stretchX = 1, stretch
   const fit = height / (ascent + descent);
   ctx.translate(x, y);
   ctx.rotate(angle);
-  // Condensed numerals get enough width to retain the generous, graphic forms
-  // in the reference. Centre by painted bounds, not the advance-width box.
-  ctx.scale(fit * 1.2 * stretchX, fit * stretchY);
+  // Match the masks: use natural Inter proportions and centre by painted bounds.
+  ctx.scale(fit * stretchX, fit * stretchY);
   ctx.fillStyle = color;
   ctx.fillText(digit, (left - right) / 2, (ascent - descent) / 2);
   ctx.restore();
@@ -208,10 +207,10 @@ function renderSplitFour(ctx, s, p, t, w, h) {
     return;
   }
   const mask = getGlyph(s.digit, s.fg);
-  ctx.font = '800 100px "Barlow Condensed", "Arial Narrow", Arial, sans-serif';
+  ctx.font = '500 100px "Inter", Arial, sans-serif';
   const metrics = ctx.measureText(s.digit);
   const fallbackRatio = ((metrics.actualBoundingBoxLeft || 0)
-    + (metrics.actualBoundingBoxRight || metrics.width)) * 1.2
+    + (metrics.actualBoundingBoxRight || metrics.width))
     / ((metrics.actualBoundingBoxAscent || 72) + (metrics.actualBoundingBoxDescent || 0));
   const width = height * (mask ? mask.width / mask.height : fallbackRatio);
   ctx.imageSmoothingEnabled = true;

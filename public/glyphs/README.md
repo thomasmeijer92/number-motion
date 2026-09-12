@@ -1,6 +1,6 @@
-# Barlow Condensed numeral masks
+# Inter Medium numeral masks
 
-Ten white RGBA masks, one each for digits 0–9. They were generated only from the bundled, unmodified Barlow Condensed ExtraBold (weight 800) Latin WOFF font from `@fontsource/barlow-condensed` 5.3.0. No reference GIF or extracted reference artwork is used.
+Ten white RGBA masks, one each for digits 0–9. They were generated only from the bundled, unmodified Inter Medium (weight 500) Latin WOFF font from `@fontsource/inter` 5.3.0. No reference GIF or extracted reference artwork is used.
 
 The source font is licensed under SIL Open Font License 1.1. Keep `OFL-1.1.txt` with the bundled font; `manifest.json` records its authorship and SHA-256. The font file is copied unchanged.
 

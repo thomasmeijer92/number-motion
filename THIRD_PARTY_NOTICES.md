@@ -7,7 +7,7 @@ The application code is MIT-licensed. Third-party components retain their own li
 | React, React DOM, Scheduler | MIT | UI runtime |
 | Phosphor Icons React | MIT | Interface icons |
 | mp4-muxer | MIT | MP4 container export |
-| Barlow Condensed | SIL Open Font License 1.1 | Numeral font and generated masks |
+| Inter | SIL Open Font License 1.1 | Numeral font and generated masks |
 | DM Sans | SIL Open Font License 1.1 | Interface typography |
 
 Full notices for the bundled runtime components and fonts are in `public/licenses/` and are included in production builds. The public numeral assets also carry their font file, license, hashes and regeneration script in `public/glyphs/`. Font licenses are not replaced by the application's MIT license.

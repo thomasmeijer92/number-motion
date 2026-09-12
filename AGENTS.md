@@ -23,7 +23,7 @@ Read projects.md, README.md, CONTRIBUTING.md and package.json before changing th
 
 ## Assets and open source
 
-- Public glyphs come from the bundled OFL-licensed Barlow font. Preserve their font license, provenance manifest, generation helper and dependency notices. Do not replace them with unlicensed reference extractions.
+- Public glyphs come from the bundled OFL-licensed Inter Medium font. Preserve their font license, provenance manifest, generation helper and dependency notices. Do not replace them with unlicensed reference extractions.
 - The original local prototype's artwork remains in ignored local-reference/. VITE_USE_LOCAL_REFERENCE applies only during development; production must always use public/glyphs/. Never commit local reference files, .env.local, generated videos, dist/, node_modules/ or scratch work/.
 - Keep the MIT application license distinct from third-party font/dependency licenses.
 

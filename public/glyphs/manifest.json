@@ -1,31 +1,31 @@
 {
-  "set": "Barlow Condensed 800 numeral masks",
+  "set": "Inter Medium 500 numeral masks",
   "input": {
-    "package": "@fontsource/barlow-condensed",
+    "package": "@fontsource/inter",
     "packageVersion": "5.3.0",
-    "family": "Barlow Condensed",
-    "weight": 800,
+    "family": "Inter",
+    "weight": 500,
     "style": "normal",
     "subset": "latin",
-    "file": "barlow-condensed-latin-800-normal.woff",
-    "sha256": "8ac1acb3ce8849a2fb0160f778099fc48a440d4f50b6121cd66e628816c2fb2b",
+    "file": "inter-latin-500-normal.woff",
+    "sha256": "9b42c108da48b5ed55a3072e815ffee2d271562e6c0dd6998910e8f9c09e0a3d",
     "pillowFontName": [
-      "Barlow Condensed ExtraBold",
+      "Inter Medium",
       "Regular"
     ],
-    "fontsourceHomepage": "https://fontsource.org/fonts/barlow-condensed",
-    "upstream": "https://github.com/jpt/barlow"
+    "fontsourceHomepage": "https://fontsource.org/fonts/inter",
+    "upstream": "https://github.com/rsms/inter"
   },
   "license": {
     "identifier": "OFL-1.1",
     "file": "OFL-1.1.txt",
-    "sha256": "046ee27d8bddc6b6ee08eee53c96dbf3ec1f6df561644e018507dd8ffcb11d31",
-    "attribution": "Copyright 2017 The Barlow Project Authors (https://github.com/jpt/barlow)",
+    "sha256": "3b0a5fca3d17942cde889069889dedbbbd075e9b599968c82a95f4d944e9b345",
+    "attribution": "Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter)",
     "fontFileUnmodified": true
   },
   "generation": {
     "script": "generate.py",
-    "scriptSha256": "0c1d5db43010170d34273c6f465a14963f07514310f1e2149eff027a0db449c9",
+    "scriptSha256": "240e8826cb6c9ba7bb8dd7659fa3e013eaff13b651172f7b229a6c9f97356ec4",
     "pillowVersion": "12.3.0",
     "freetypeVersion": "2.14.3",
     "renderFontSize": 4096,
@@ -37,74 +37,108 @@
   "glyphs": {
     "0": {
       "file": "0.png",
-      "width": 396,
+      "width": 501,
       "height": 700,
-      "aspectRatio": 0.5657142857142857,
+      "aspectRatio": 0.7157142857142857,
       "inkBounds": [
         0,
         0,
-        396,
+        501,
         700
       ],
       "naturalInkAt4096px": [
-        1679,
-        2966
+        2192,
+        3060
       ],
-      "sha256": "39a8705b9cca422736527889ec62bb6cecf91d962812825d3044b6d259240e65"
+      "sha256": "c4e7c964832d1354cf1fb7ec75f841ff33adff23fe505a9a40cdcaba218f5da1"
     },
     "1": {
       "file": "1.png",
-      "width": 259,
+      "width": 277,
       "height": 700,
-      "aspectRatio": 0.37,
+      "aspectRatio": 0.39571428571428574,
       "inkBounds": [
         0,
         0,
-        259,
+        277,
         700
       ],
       "naturalInkAt4096px": [
-        1061,
-        2868
+        1180,
+        2980
       ],
-      "sha256": "e0a086983a63271b189feec4f2d4e334a975479b7ea8dac8bbcf0623c6934a31"
+      "sha256": "2d15b8db2730a040a1f5f9237323574343f42f63093758945ce9d40a3a874219"
     },
     "2": {
       "file": "2.png",
-      "width": 414,
+      "width": 457,
       "height": 700,
-      "aspectRatio": 0.5914285714285714,
+      "aspectRatio": 0.6528571428571428,
       "inkBounds": [
         0,
         0,
-        414,
+        457,
         700
       ],
       "naturalInkAt4096px": [
-        1717,
-        2901
+        1972,
+        3020
       ],
-      "sha256": "438acd70473b925d6f7109d93f802c5251a37cf1e9addcc39d71927b54beb740"
+      "sha256": "650e4dd9f3ee077823e737482b2d90fc5c3bd1ad986294d3b0fa51dd55a3f031"
     },
     "3": {
       "file": "3.png",
-      "width": 400,
+      "width": 483,
       "height": 700,
-      "aspectRatio": 0.5714285714285714,
+      "aspectRatio": 0.69,
       "inkBounds": [
         0,
         0,
-        400,
+        483,
         700
       ],
       "naturalInkAt4096px": [
-        1656,
-        2901
+        2110,
+        3060
       ],
-      "sha256": "8c4885b0b36a7181a9d65775038f212ea3ce92a76e29878f7572ad6604407b7d"
+      "sha256": "31914973685f0e6f74aa68292b8b21a9c0cbc765503a72952e0c339ebed63288"
     },
     "4": {
       "file": "4.png",
+      "width": 526,
+      "height": 700,
+      "aspectRatio": 0.7514285714285714,
+      "inkBounds": [
+        0,
+        0,
+        526,
+        700
+      ],
+      "naturalInkAt4096px": [
+        2240,
+        2980
+      ],
+      "sha256": "8a4c526179537e9357af5f4383c1fa8c6a8999e8a521cbf7817fe42386141566"
+    },
+    "5": {
+      "file": "5.png",
+      "width": 466,
+      "height": 700,
+      "aspectRatio": 0.6657142857142857,
+      "inkBounds": [
+        0,
+        0,
+        466,
+        700
+      ],
+      "naturalInkAt4096px": [
+        2012,
+        3020
+      ],
+      "sha256": "a8f05d927ebdc1c5a5cd325eb948ba4e907d2319af865d15af266f0b00eedd70"
+    },
+    "6": {
+      "file": "6.png",
       "width": 487,
       "height": 700,
       "aspectRatio": 0.6957142857142857,
@@ -115,95 +149,61 @@
         700
       ],
       "naturalInkAt4096px": [
-        1995,
-        2868
+        2130,
+        3060
       ],
-      "sha256": "3cc5b77af3f58c9ba57f9885d1ba6cec736b4f4fbd7833e41f95fecf52eb130a"
-    },
-    "5": {
-      "file": "5.png",
-      "width": 402,
-      "height": 700,
-      "aspectRatio": 0.5742857142857143,
-      "inkBounds": [
-        0,
-        0,
-        402,
-        700
-      ],
-      "naturalInkAt4096px": [
-        1664,
-        2901
-      ],
-      "sha256": "64469a5414bc020596e8a7693e14d473ac49f88ab77e44d125ab97fb9beca247"
-    },
-    "6": {
-      "file": "6.png",
-      "width": 399,
-      "height": 700,
-      "aspectRatio": 0.57,
-      "inkBounds": [
-        0,
-        0,
-        399,
-        700
-      ],
-      "naturalInkAt4096px": [
-        1672,
-        2933
-      ],
-      "sha256": "e11f8aa390bdc6f5e77a7d079953f52b3cd4aae88594fbe1a0d98bae252d96a5"
+      "sha256": "ded13d7fcff2adf1b9137d9d3290b6cd7f6f7e1a7ea6676e95da09ac5968c359"
     },
     "7": {
       "file": "7.png",
-      "width": 405,
+      "width": 465,
       "height": 700,
-      "aspectRatio": 0.5785714285714286,
+      "aspectRatio": 0.6642857142857143,
       "inkBounds": [
         0,
         0,
-        405,
+        465,
         700
       ],
       "naturalInkAt4096px": [
-        1659,
-        2868
+        1978,
+        2980
       ],
-      "sha256": "897e3b684af9359abcf43e9216cfd12b4b408531c220e40e2052adeed52ff060"
+      "sha256": "1fc08e51620273bcc4a12993a95b7f6c4eeada3a0cc0669652c786654192b9a7"
     },
     "8": {
       "file": "8.png",
-      "width": 389,
+      "width": 486,
       "height": 700,
-      "aspectRatio": 0.5557142857142857,
+      "aspectRatio": 0.6942857142857143,
       "inkBounds": [
         0,
         0,
-        389,
+        486,
         700
       ],
       "naturalInkAt4096px": [
-        1643,
-        2958
+        2126,
+        3060
       ],
-      "sha256": "ca66453fd4d759922dcd0470c5ae0f30e238581d0cd3e3e0ec49788b1ec31093"
+      "sha256": "7fd2b2c5c252df4e4842dd1b7f005af8cb4cd4ecded606a9368b280a7518a7a2"
     },
     "9": {
       "file": "9.png",
-      "width": 399,
+      "width": 486,
       "height": 700,
-      "aspectRatio": 0.57,
+      "aspectRatio": 0.6942857142857143,
       "inkBounds": [
         0,
         0,
-        399,
+        486,
         700
       ],
       "naturalInkAt4096px": [
-        1672,
-        2934
+        2130,
+        3065
       ],
-      "sha256": "e5ae5d203ca535b2195cb69afbc3c83ede79b1e87459296326611a7c96ff4563"
+      "sha256": "9ab5b5c2794ab901757002d8d4b7201e1361c77ff580b0289a96ca2caf3c7a9b"
     }
   }
 }

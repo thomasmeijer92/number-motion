@@ -42,7 +42,7 @@ Preview, scrubbing and export share the same deterministic renderer. MP4 uses ex
 
 ## Open-source assets
 
-The public build uses numeral masks generated from **Barlow Condensed 800**, licensed under SIL OFL 1.1. The source font, license, provenance hashes and regeneration helper are in [`public/glyphs`](public/glyphs). The interface uses DM Sans. See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+The public build uses numeral masks generated from **Inter Medium (500)**, licensed under SIL OFL 1.1. The source font, license, provenance hashes and regeneration helper are in [`public/glyphs`](public/glyphs). The interface uses DM Sans. See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 
 Motion profiles were implemented from measurements of a supplied animation reference. The original GIF and its extracted artwork are not redistributed. The public glyph shapes therefore differ from that private reference.
 
