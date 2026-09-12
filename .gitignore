@@ -1,0 +1,12 @@
+node_modules/
+dist/
+work/
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
+# Local reference material has no confirmed redistribution license.
+public/reference.gif
+public/reference-glyphs/
+local-reference/

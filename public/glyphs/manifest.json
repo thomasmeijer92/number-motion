@@ -1,0 +1,209 @@
+{
+  "set": "Barlow Condensed 800 numeral masks",
+  "input": {
+    "package": "@fontsource/barlow-condensed",
+    "packageVersion": "5.3.0",
+    "family": "Barlow Condensed",
+    "weight": 800,
+    "style": "normal",
+    "subset": "latin",
+    "file": "barlow-condensed-latin-800-normal.woff",
+    "sha256": "8ac1acb3ce8849a2fb0160f778099fc48a440d4f50b6121cd66e628816c2fb2b",
+    "pillowFontName": [
+      "Barlow Condensed ExtraBold",
+      "Regular"
+    ],
+    "fontsourceHomepage": "https://fontsource.org/fonts/barlow-condensed",
+    "upstream": "https://github.com/jpt/barlow"
+  },
+  "license": {
+    "identifier": "OFL-1.1",
+    "file": "OFL-1.1.txt",
+    "sha256": "046ee27d8bddc6b6ee08eee53c96dbf3ec1f6df561644e018507dd8ffcb11d31",
+    "attribution": "Copyright 2017 The Barlow Project Authors (https://github.com/jpt/barlow)",
+    "fontFileUnmodified": true
+  },
+  "generation": {
+    "script": "generate.py",
+    "scriptSha256": "0c1d5db43010170d34273c6f465a14963f07514310f1e2149eff027a0db449c9",
+    "pillowVersion": "12.3.0",
+    "freetypeVersion": "2.14.3",
+    "renderFontSize": 4096,
+    "targetPaintedHeight": 700,
+    "resampling": "LANCZOS, uniform scale; output width rounded to nearest pixel",
+    "pixelFormat": "RGBA, white RGB with antialiased alpha",
+    "referenceArtworkUsed": false
+  },
+  "glyphs": {
+    "0": {
+      "file": "0.png",
+      "width": 396,
+      "height": 700,
+      "aspectRatio": 0.5657142857142857,
+      "inkBounds": [
+        0,
+        0,
+        396,
+        700
+      ],
+      "naturalInkAt4096px": [
+        1679,
+        2966
+      ],
+      "sha256": "39a8705b9cca422736527889ec62bb6cecf91d962812825d3044b6d259240e65"
+    },
+    "1": {
+      "file": "1.png",
+      "width": 259,
+      "height": 700,
+      "aspectRatio": 0.37,
+      "inkBounds": [
+        0,
+        0,
+        259,
+        700
+      ],
+      "naturalInkAt4096px": [
+        1061,
+        2868
+      ],
+      "sha256": "e0a086983a63271b189feec4f2d4e334a975479b7ea8dac8bbcf0623c6934a31"
+    },
+    "2": {
+      "file": "2.png",
+      "width": 414,
+      "height": 700,
+      "aspectRatio": 0.5914285714285714,
+      "inkBounds": [
+        0,
+        0,
+        414,
+        700
+      ],
+      "naturalInkAt4096px": [
+        1717,
+        2901
+      ],
+      "sha256": "438acd70473b925d6f7109d93f802c5251a37cf1e9addcc39d71927b54beb740"
+    },
+    "3": {
+      "file": "3.png",
+      "width": 400,
+      "height": 700,
+      "aspectRatio": 0.5714285714285714,
+      "inkBounds": [
+        0,
+        0,
+        400,
+        700
+      ],
+      "naturalInkAt4096px": [
+        1656,
+        2901
+      ],
+      "sha256": "8c4885b0b36a7181a9d65775038f212ea3ce92a76e29878f7572ad6604407b7d"
+    },
+    "4": {
+      "file": "4.png",
+      "width": 487,
+      "height": 700,
+      "aspectRatio": 0.6957142857142857,
+      "inkBounds": [
+        0,
+        0,
+        487,
+        700
+      ],
+      "naturalInkAt4096px": [
+        1995,
+        2868
+      ],
+      "sha256": "3cc5b77af3f58c9ba57f9885d1ba6cec736b4f4fbd7833e41f95fecf52eb130a"
+    },
+    "5": {
+      "file": "5.png",
+      "width": 402,
+      "height": 700,
+      "aspectRatio": 0.5742857142857143,
+      "inkBounds": [
+        0,
+        0,
+        402,
+        700
+      ],
+      "naturalInkAt4096px": [
+        1664,
+        2901
+      ],
+      "sha256": "64469a5414bc020596e8a7693e14d473ac49f88ab77e44d125ab97fb9beca247"
+    },
+    "6": {
+      "file": "6.png",
+      "width": 399,
+      "height": 700,
+      "aspectRatio": 0.57,
+      "inkBounds": [
+        0,
+        0,
+        399,
+        700
+      ],
+      "naturalInkAt4096px": [
+        1672,
+        2933
+      ],
+      "sha256": "e11f8aa390bdc6f5e77a7d079953f52b3cd4aae88594fbe1a0d98bae252d96a5"
+    },
+    "7": {
+      "file": "7.png",
+      "width": 405,
+      "height": 700,
+      "aspectRatio": 0.5785714285714286,
+      "inkBounds": [
+        0,
+        0,
+        405,
+        700
+      ],
+      "naturalInkAt4096px": [
+        1659,
+        2868
+      ],
+      "sha256": "897e3b684af9359abcf43e9216cfd12b4b408531c220e40e2052adeed52ff060"
+    },
+    "8": {
+      "file": "8.png",
+      "width": 389,
+      "height": 700,
+      "aspectRatio": 0.5557142857142857,
+      "inkBounds": [
+        0,
+        0,
+        389,
+        700
+      ],
+      "naturalInkAt4096px": [
+        1643,
+        2958
+      ],
+      "sha256": "ca66453fd4d759922dcd0470c5ae0f30e238581d0cd3e3e0ec49788b1ec31093"
+    },
+    "9": {
+      "file": "9.png",
+      "width": 399,
+      "height": 700,
+      "aspectRatio": 0.57,
+      "inkBounds": [
+        0,
+        0,
+        399,
+        700
+      ],
+      "naturalInkAt4096px": [
+        1672,
+        2934
+      ],
+      "sha256": "e5ae5d203ca535b2195cb69afbc3c83ede79b1e87459296326611a7c96ff4563"
+    }
+  }
+}

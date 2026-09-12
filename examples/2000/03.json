@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "name": "2000 03 Groeien en loslaten",
+  "ratio": "16:9",
+  "scenes": [
+    {
+      "id": "0cea414c-9aeb-4ece-9c02-098c1b9c8334",
+      "digit": "2",
+      "effect": "quad",
+      "bg": "#144CFD",
+      "fg": "#CDD5D5",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "dadb2bc0-adec-438e-aacd-723d14062fc4",
+      "digit": "0",
+      "effect": "rings",
+      "bg": "#FFBB00",
+      "fg": "#2A1200",
+      "duration": 0.42,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "6855a597-b95e-4030-99e3-ca6ef59d2e80",
+      "digit": "0",
+      "effect": "splitFour",
+      "bg": "#FF2624",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "6766e506-c62e-4490-8129-3fcec400ba8b",
+      "digit": "0",
+      "effect": "single",
+      "bg": "#009D8B",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    }
+  ]
+}

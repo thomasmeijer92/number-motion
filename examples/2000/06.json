@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "name": "2000 06 Versnellen en groeien",
+  "ratio": "16:9",
+  "scenes": [
+    {
+      "id": "a843ae33-87fe-4a26-bc0e-0e68d4885a55",
+      "digit": "2",
+      "effect": "pattern",
+      "bg": "#009D8B",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "55c3ff63-25ca-4618-a051-5a438f94e7e2",
+      "digit": "0",
+      "effect": "cluster",
+      "bg": "#144CFD",
+      "fg": "#CDD5D5",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "f8f18d04-429c-490c-b9fd-56831e9409ee",
+      "digit": "0",
+      "effect": "rings",
+      "bg": "#320E00",
+      "fg": "#009D8B",
+      "duration": 0.42,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "c5cca65a-19ba-4767-ad9e-950458759d97",
+      "digit": "0",
+      "effect": "single",
+      "bg": "#FFBB00",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    }
+  ]
+}

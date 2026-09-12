@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "name": "2000 01 Draaien, schuiven, delen",
+  "ratio": "16:9",
+  "scenes": [
+    {
+      "id": "31047f2f-fc9c-4e06-b23f-8b3256ae3033",
+      "digit": "2",
+      "effect": "duo",
+      "bg": "#FFBB00",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "22a575c0-e8fd-421a-8721-d89e8d329fd7",
+      "digit": "0",
+      "effect": "pattern",
+      "bg": "#009D8B",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "e38c6a08-c613-4b62-95a3-0c0fab9bbe16",
+      "digit": "0",
+      "effect": "scroll",
+      "bg": "#144CFD",
+      "fg": "#CDD5D5",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "545cc525-b70f-4f24-9416-0b7854b79990",
+      "digit": "0",
+      "effect": "splitFour",
+      "bg": "#FF2624",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    }
+  ]
+}

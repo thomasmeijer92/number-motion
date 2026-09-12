@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "name": "2000 04 Draai en krimp",
+  "ratio": "16:9",
+  "scenes": [
+    {
+      "id": "97d96e33-6fb6-44af-b700-80c735c4eac7",
+      "digit": "2",
+      "effect": "reveal",
+      "bg": "#320E00",
+      "fg": "#009D8B",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "ca106afc-df07-4ff6-b0e8-815ae5c38d5a",
+      "digit": "0",
+      "effect": "duo",
+      "bg": "#FF2624",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "3d42bc36-1979-4d59-ad38-701de93a0c1d",
+      "digit": "0",
+      "effect": "scroll",
+      "bg": "#CDD5D5",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "ecdcf344-a302-4727-90f6-485859429daa",
+      "digit": "0",
+      "effect": "single",
+      "bg": "#FFBB00",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    }
+  ]
+}
