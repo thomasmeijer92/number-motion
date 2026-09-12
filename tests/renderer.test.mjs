@@ -93,9 +93,10 @@ test('splitFour partitions the whole numeral into unique quarters and rejoins be
   const relativeClips = clips.map(([x, y, w, h], i) => [
     Math.round(x - centers[i][0]), Math.round(y - centers[i][1]), Math.round(w), Math.round(h),
   ]);
+  // Natural painted bounds are 48/72 wide; Inter needs no extra widening.
   assert.deepEqual(relativeClips, [
-    [-216, -270, 216, 270], [0, -270, 216, 270],
-    [-216, 0, 216, 270], [0, 0, 216, 270],
+    [-180, -270, 180, 270], [0, -270, 180, 270],
+    [-180, 0, 180, 270], [0, 0, 180, 270],
   ]);
   assert.ok(clips[1][0] - (clips[0][0] + clips[0][2]) > 150);
   assert.ok(clips[2][1] - (clips[0][1] + clips[0][3]) > 150);

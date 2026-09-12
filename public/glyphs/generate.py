@@ -16,7 +16,7 @@ import PIL
 from PIL import Image, ImageDraw, ImageFont, features
 
 BASE = Path(__file__).resolve().parent
-FONT_FILE = 'barlow-condensed-latin-800-normal.woff'
+FONT_FILE = 'inter-latin-500-normal.woff'
 FONT_SIZE = 4096
 
 
@@ -63,25 +63,25 @@ def main() -> None:
         }
 
     manifest = {
-        'set': 'Barlow Condensed 800 numeral masks',
+        'set': 'Inter Medium 500 numeral masks',
         'input': {
-            'package': '@fontsource/barlow-condensed',
+            'package': '@fontsource/inter',
             'packageVersion': '5.3.0',
-            'family': 'Barlow Condensed',
-            'weight': 800,
+            'family': 'Inter',
+            'weight': 500,
             'style': 'normal',
             'subset': 'latin',
             'file': FONT_FILE,
             'sha256': sha256(font_path),
             'pillowFontName': list(font.getname()),
-            'fontsourceHomepage': 'https://fontsource.org/fonts/barlow-condensed',
-            'upstream': 'https://github.com/jpt/barlow',
+            'fontsourceHomepage': 'https://fontsource.org/fonts/inter',
+            'upstream': 'https://github.com/rsms/inter',
         },
         'license': {
             'identifier': 'OFL-1.1',
             'file': 'OFL-1.1.txt',
             'sha256': sha256(BASE / 'OFL-1.1.txt'),
-            'attribution': 'Copyright 2017 The Barlow Project Authors (https://github.com/jpt/barlow)',
+            'attribution': 'Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter)',
             'fontFileUnmodified': True,
         },
         'generation': {
