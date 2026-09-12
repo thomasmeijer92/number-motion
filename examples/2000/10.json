@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "name": "2000 10 Van delen naar draaien",
+  "ratio": "16:9",
+  "scenes": [
+    {
+      "id": "1bfb9f47-8de5-467b-a02a-41cbb0a4ac78",
+      "digit": "2",
+      "effect": "splitFour",
+      "bg": "#CDD5D5",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "4b558eab-0f23-48a4-b44d-eb60e1510593",
+      "digit": "0",
+      "effect": "scroll",
+      "bg": "#FF2624",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "ddae9fc9-41fd-45f4-b1e5-7b11d0b60a51",
+      "digit": "0",
+      "effect": "single",
+      "bg": "#FFBB00",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "09586e36-3f80-41b9-b4ae-4255f56bf915",
+      "digit": "0",
+      "effect": "cluster",
+      "bg": "#009D8B",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    }
+  ]
+}

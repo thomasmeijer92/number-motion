@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "name": "2000 09 Schuiven en afremmen",
+  "ratio": "16:9",
+  "scenes": [
+    {
+      "id": "8efaae71-75af-4d9b-8e03-0cf6863b9796",
+      "digit": "2",
+      "effect": "rings",
+      "bg": "#320E00",
+      "fg": "#009D8B",
+      "duration": 0.42,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "bc5d8394-31f3-425d-8f35-00c9e59e8f0e",
+      "digit": "0",
+      "effect": "pattern",
+      "bg": "#FFBB00",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "7debf293-de69-4131-ab1e-463134968e83",
+      "digit": "0",
+      "effect": "duo",
+      "bg": "#FF2624",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "94f2e13d-504c-419b-8f2f-c7910666b317",
+      "digit": "0",
+      "effect": "splitFour",
+      "bg": "#144CFD",
+      "fg": "#CDD5D5",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    }
+  ]
+}

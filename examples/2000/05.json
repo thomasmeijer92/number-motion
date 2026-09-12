@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "name": "2000 05 Delen en opbouwen",
+  "ratio": "16:9",
+  "scenes": [
+    {
+      "id": "2e447e39-088c-4cae-8803-5ca45c9c2b60",
+      "digit": "2",
+      "effect": "orbit",
+      "bg": "#FF2624",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "a43031f4-71a7-4526-8017-8b52cfc35650",
+      "digit": "0",
+      "effect": "splitFour",
+      "bg": "#CDD5D5",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "0c86acea-14d4-4418-a233-ed3d5fb8c1ff",
+      "digit": "0",
+      "effect": "scatter",
+      "bg": "#009D8B",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "ec549d7e-d7a4-4ea2-a073-1f2c1403711e",
+      "digit": "0",
+      "effect": "reveal",
+      "bg": "#144CFD",
+      "fg": "#CDD5D5",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    }
+  ]
+}

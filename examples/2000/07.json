@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "name": "2000 07 Stretch en uitzoomen",
+  "ratio": "16:9",
+  "scenes": [
+    {
+      "id": "ffdacedd-4836-4397-b2e6-c6ac48f8f9e7",
+      "digit": "2",
+      "effect": "scatter",
+      "bg": "#FFBB00",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "25539bce-5cb8-424a-8340-dd43d0fbbefa",
+      "digit": "0",
+      "effect": "single",
+      "bg": "#CDD5D5",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "022442e3-f29b-40d4-bcf0-e3344fe873ad",
+      "digit": "0",
+      "effect": "reveal",
+      "bg": "#144CFD",
+      "fg": "#CDD5D5",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    },
+    {
+      "id": "14cd5cb0-9e5e-486d-988b-ff3eb9321a75",
+      "digit": "0",
+      "effect": "scroll",
+      "bg": "#FF2624",
+      "fg": "#2A1200",
+      "duration": 0.45,
+      "speed": 1,
+      "scale": 1
+    }
+  ]
+}
