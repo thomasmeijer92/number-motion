@@ -13,18 +13,18 @@ Read projects.md, README.md, CONTRIBUTING.md and package.json before changing th
 
 ## Product and rendering contracts
 
-- One numeral per independently previewed video block. Only export joins the blocks in order. The splitFour effect may divide one numeral into four disjoint pieces; never duplicate it into four complete numerals.
+- One visible NFC-normalized Unicode grapheme per independently previewed video block. Only export joins the blocks in order. The splitFour effect may divide one character into four disjoint pieces; never duplicate it into four complete characters.
 - Preview, scrubbing and export share the deterministic renderer. Keep the measured positions, scale, direction and timing in src/reference-frames.js, including clipped or blank source poses.
 - Source motion lasts 0.45 s at speed 1, except rings at 0.42 s. Block duration changes the cut, not the motion speed; longer blocks hold the final pose. Referentietempo restores duration and speed. New blocks default to 0.45 s; preserve stored durations.
 - Render cuts and loop boundaries must account for floating-point rounding. Keep existing regression coverage for blank source poses and repeated cuts.
 - MP4 is the primary export. Never silently substitute WebM. Keep the five-minute maximum consistent between UI and exporter.
 - Protect invalid, newer or unreadable stored projects from startup autosave. Give an explicit recovery path before replacing them.
-- Required numeral assets must load successfully before playback or export; errors must be visible and retryable.
+- The current character set must have ready Inter masks before playback or export; compare its key during render, not only in a later effect. Invalid or composing character drafts also block playback, video export and JSON download. Errors must be visible and retryable. Preserve the version-1 digit field for old projects.
 
 ## Assets and open source
 
-- Public glyphs come from the bundled OFL-licensed Inter Medium font. Preserve their font license, provenance manifest, generation helper and dependency notices. Do not replace them with unlicensed reference extractions.
-- The original local prototype's artwork remains in ignored local-reference/. VITE_USE_LOCAL_REFERENCE applies only during development; production must always use public/glyphs/. Never commit local reference files, .env.local, generated videos, dist/, node_modules/ or scratch work/.
+- Runtime glyphs are generated from the bundled OFL-licensed Inter Medium font. Validate every cluster against the actual cmap of one complete subset, and use its own loaded FontFace family with no renderer fallback. Preserve font licenses, coverage/source hashes, generation helpers and dependency notices. Do not replace them with unlicensed reference extractions.
+- The original local prototype's artwork remains in ignored local-reference/ and is no longer a runtime glyph source. The ten PNGs in public/glyphs/ are retained font specimens. Never commit local reference files, .env.local, generated videos, dist/, node_modules/ or scratch work/.
 - Keep the MIT application license distinct from third-party font/dependency licenses.
 
 ## Checks and tooling

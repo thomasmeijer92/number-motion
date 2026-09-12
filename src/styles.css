@@ -7,3 +7,11 @@
 /* Keep small editing labels readable against the neutral studio surface. */
 .section-label>span,.color-field>span,.palette-row>span,.slider-label,.duration-row>label,.effect-description,.eyebrow,.save-indicator,.scene-card-meta>span,.sequence-footer>span,.preview-caption,.app-footer,.app-tag,.time-code>span,.current-scene span,.loop-label,.sequence-heading>div>span,.tiny-button{color:#6d7561}
 .control-section .section-label h3{font-size:12px}.effect-description{font-size:11px}.color-field>span,.slider-label,.duration-row>label{font-size:11px}.color-entry input:not([type=color]){font-size:10px}.scene-card-meta>span{font-size:10px}.scene-card-meta>strong{font-size:11px}.sequence-footer>span,.preview-caption,.save-indicator{font-size:10px}.digit-picker button{color:#6c7759}.digit-picker button.selected{color:#252f13}.small-badge{color:#627341}.palette-row{gap:6px}.error-message[hidden]{display:none}
+
+/* A complete grapheme is edited as one draft, including IME composition. */
+.character-control .section-label label{font-size:12px;font-weight:600}
+.character-input{display:block;width:100%;min-width:0;box-sizing:border-box;height:52px;border:1px solid #dfe4d4;border-radius:6px;padding:8px 12px;background:#f8f9f3;color:#252923;font-family:'Inter',sans-serif;font-weight:500;font-size:28px;line-height:1.2}
+.character-input[aria-invalid=true]{border-color:#9b4a36;background:#fff8f4}
+.character-hint{font-size:10px;line-height:1.5;color:#6d7561;margin:7px 0}
+.character-error{font-size:11px;line-height:1.5;color:#8a3829;margin:7px 0;overflow-wrap:anywhere}
+.character-control .digit-picker{margin-top:10px}

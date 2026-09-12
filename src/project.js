@@ -1,4 +1,5 @@
 import { DEFAULT_SCENES, EFFECTS } from './renderer.js';
+import { normalizeCharacter } from './characters.js';
 
 export const STORAGE_KEY = 'number-motion-project-v1';
 export const uid = () => crypto.randomUUID();
@@ -9,8 +10,8 @@ const number = (value, min, max) => typeof value === 'number' && Number.isFinite
 export function validateProject(value) {
   if (!value || value.version !== 1 || !['16:9', '1:1', '9:16'].includes(value.ratio) || !Array.isArray(value.scenes) || value.scenes.length < 1 || value.scenes.length > 60) throw new Error('Kies een Number Motion-project met 1–60 blokken.');
   const scenes = value.scenes.map(scene => {
-    if (!scene || !/^\d$/.test(String(scene.digit)) || !EFFECTS.some(effect => effect.id === scene.effect) || !color(scene.bg) || !color(scene.fg) || !number(scene.duration, 0.2, 10) || !number(scene.speed, 0.25, 3) || !number(scene.scale, 0.5, 1.5)) throw new Error('Dit project bevat ongeldige blokinstellingen.');
-    return { id: uid(), digit: String(scene.digit), effect: scene.effect, bg: scene.bg, fg: scene.fg, ...(color(scene.accent) ? { accent: scene.accent } : {}), ...(color(scene.centerColor) ? { centerColor: scene.centerColor } : {}), duration: scene.duration, speed: scene.speed, scale: scene.scale };
+    if (!scene || !EFFECTS.some(effect => effect.id === scene.effect) || !color(scene.bg) || !color(scene.fg) || !number(scene.duration, 0.2, 10) || !number(scene.speed, 0.25, 3) || !number(scene.scale, 0.5, 1.5)) throw new Error('Dit project bevat ongeldige blokinstellingen.');
+    return { id: uid(), digit: normalizeCharacter(scene.digit), effect: scene.effect, bg: scene.bg, fg: scene.fg, ...(color(scene.accent) ? { accent: scene.accent } : {}), ...(color(scene.centerColor) ? { centerColor: scene.centerColor } : {}), duration: scene.duration, speed: scene.speed, scale: scene.scale };
   });
   return { version: 1, name: String(value.name || 'Mijn motion reel').slice(0, 60), ratio: value.ratio, scenes };
 }
