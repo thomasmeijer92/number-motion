@@ -14,6 +14,7 @@ export function fakeCanvas({ metrics, blank = false } = {}) {
     fillText(character) { canvas.character = character; canvas.font = this.font; },
     drawImage(source, ...args) { canvas.character = source.character; canvas.font = source.font; canvas.source = source; canvas.crop = args; },
     fillRect() { canvas.color = this.fillStyle; },
+    putImageData(pixels) { canvas.pixels = pixels; },
     getImageData() {
       const data = new Uint8ClampedArray(canvas.width * canvas.height * 4);
       if (!blank) for (let y = 4; y < canvas.height - 4; y += 1) for (let x = 4; x < canvas.width - 4; x += 1) data[(y * canvas.width + x) * 4 + 3] = 255;

@@ -1,6 +1,8 @@
 import { getGlyph, hasGlyphs } from './glyphs.js';
 import { normalizeCharacter } from './characters.js';
 import { REFERENCE_BOUNDS, REFERENCE_TRACKS } from './reference-frames.js';
+import { renderFullComposition } from './full-compositions.js';
+import { constructionGeometry, getConstructionMask } from './construction.js';
 
 export const SOURCE_DURATION = { single: 0.45, duo: 0.45, orbit: 0.45, quad: 0.45, pattern: 0.45, scatter: 0.45, reveal: 0.45, cluster: 0.45, spinSweep: 0.45, splitFour: 0.45, scroll: 0.45, rings: 0.42 };
 
@@ -10,14 +12,14 @@ export const EFFECTS = [
   { id: 'single', label: 'Stretch', description: 'De gemeten stretch en settling van de originele 1.' },
   { id: 'duo', label: 'Draaien en afremmen', description: 'De draaiende inzet van één originele 2.' },
   { id: 'orbit', label: 'Zoom-explosie', description: 'De versnellende zoom en draaiing van één originele 3.' },
-  { id: 'quad', label: 'Groeien en verplaatsen', description: 'Eén cijfer volgt de groeiende draaibeweging van de originele 4.' },
-  { id: 'pattern', label: 'Verticaal schuiven', description: 'Eén cijfer schuift mee met het oorspronkelijke 5-patroon.' },
+  { id: 'quad', label: 'Groeiend kwartet', description: 'Vier exemplaren van je teken groeien en bewegen samen, zoals de originele 4.' },
+  { id: 'pattern', label: 'Schuivend patroon', description: 'Je teken herhaalt zich in verschoven kolommen die omlaag schuiven, zoals het originele 5-patroon.' },
   { id: 'scatter', label: 'Boogbeweging', description: 'De doorgaande cirkelbeweging van één originele 6.' },
-  { id: 'reveal', label: 'Opbouwen', description: 'De bovenstrook groeit en onthult het cijfer zoals de originele 7.' },
+  { id: 'reveal', label: 'Opbouw', description: 'Een balk groeit, verschuift en ontvouwt zich tot je teken, zoals de originele 7.' },
   { id: 'cluster', label: 'Versnellend draaien', description: 'Eén cijfer draait naar buiten zoals in de originele 8-groep.' },
   { id: 'spinSweep', label: 'Draaien en schuiven', description: 'Een versterkte variant: een ruime draai met een brede verplaatsing van links naar rechts.' },
   { id: 'splitFour', label: 'In vieren delen', description: 'Vier stukken van één cijfer schuiven uiteen en komen weer samen.' },
-  { id: 'scroll', label: 'Uitzoomen', description: 'De uitzoom en verschuiving uit het originele 9-patroon.' },
+  { id: 'scroll', label: 'Uitzoomend patroon', description: 'Groepjes van je teken schuiven per rij en zoomen uit, zoals het originele 9-patroon.' },
   { id: 'rings', label: 'Groeien', description: 'De snelle groei van de centrale 0 in het origineel.' },
 ];
 
@@ -133,28 +135,28 @@ function renderTracked(ctx, s, p, w, h, digit) {
 function renderReveal(ctx, s, p, t, w, h) {
   const frame = p * 15;
   const bounds = sampleReference(REFERENCE_BOUNDS['7'], frame);
+  if (!bounds) return;
+  const mask = getGlyph(s.digit, s.fg);
   const unit = sourceUnit(w, h);
-  ctx.save();
-  ctx.beginPath();
-  if (!bounds) {
-    // The source starts blank. Still paint a single clipped numeral, no extra
-    // rectangle or replacement glyph when the construction starts.
-    ctx.rect(0, 0, 0, 0);
-    ctx.clip();
-    glyph(ctx, s.digit, w / 2, h / 2, 660 * unit, s.fg);
+  const g = constructionGeometry(mask, bounds);
+  const x = w / 2 + (g.x - 700) * unit;
+  const y = h / 2 + (g.top - 394) * unit;
+  if (frame <= 6 + 1e-9) {
+    ctx.fillStyle = s.fg;
+    ctx.fillRect(x - g.barWidth * unit / 2, y, g.barWidth * unit, g.visibleHeight * unit);
+  } else if (frame < 8 - 1e-9) {
+    const shape = getConstructionMask(mask, s.fg, bounds, frame);
+    ctx.drawImage(shape.canvas,
+      w / 2 + (shape.left - 700) * unit, h / 2 + (shape.top - 394) * unit,
+      shape.width * unit, shape.height * unit);
   } else {
-    const [left, top, right, bottom] = bounds;
-    const sourceRatio = 475 / 665;
-    const fullHeight = frame <= 6 ? (bottom - top) / 0.13
-      : Math.max(bottom - top, (right - left) / sourceRatio);
-    const x = w / 2 + ((left + right) / 2 - 700) * unit;
-    const y = h / 2 + (top - 394) * unit;
-    ctx.rect(-w, y, w * 3, (bottom - top) * unit);
-    ctx.clip();
-    glyph(ctx, s.digit, x, y + fullHeight * unit / 2, fullHeight * unit,
-      s.fg, 0, (right - left) / fullHeight / sourceRatio);
+    // Reveal downwards through the measured strip, keeping the selected Inter
+    // character's own contour and the relative height of punctuation.
+    ctx.save(); ctx.beginPath();
+    ctx.rect(x - g.width * unit / 2, y, g.width * unit, g.visibleHeight * unit); ctx.clip();
+    ctx.drawImage(mask, x - g.width * unit / 2, y, g.width * unit, g.height * unit);
+    ctx.restore();
   }
-  ctx.restore();
 }
 
 // An explicit creative variation for the second zero in Test 2000. Retain the
@@ -207,9 +209,10 @@ function renderSplitFour(ctx, s, p, t, w, h) {
 
 const renderers = {
   single: renderSingle,
-  ...Object.fromEntries([['duo', '2'], ['orbit', '3'], ['quad', '4'], ['pattern', '5'],
-    ['scatter', '6'], ['cluster', '8'], ['scroll', '9']].map(([effect, digit]) =>
+  ...Object.fromEntries([['duo', '2'], ['orbit', '3'], ['scatter', '6'], ['cluster', '8']].map(([effect, digit]) =>
     [effect, (ctx, s, p, t, w, h) => renderTracked(ctx, s, p, w, h, digit)])),
+  ...Object.fromEntries(['quad', 'pattern', 'scroll'].map(effect =>
+    [effect, (ctx, s, p, t, w, h) => renderFullComposition(ctx, s, p, w, h)])),
   reveal: renderReveal, rings: renderRings, spinSweep: renderSpinSweep, splitFour: renderSplitFour,
 };
 
