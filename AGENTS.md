@@ -13,8 +13,8 @@ Read projects.md, README.md, CONTRIBUTING.md and package.json before changing th
 
 ## Product and rendering contracts
 
-- One visible NFC-normalized Unicode grapheme per independently previewed video block. Only export joins the blocks in order. The splitFour effect may divide one character into four disjoint pieces; never duplicate it into four complete characters.
-- Preview, scrubbing and export share the deterministic renderer. Keep the measured positions, scale, direction and timing in src/reference-frames.js, including clipped or blank source poses.
+- One selected NFC-normalized Unicode grapheme per independently previewed video block. The quad, pattern and scroll effects repeat that selected character in their full reference compositions. Only export joins the blocks in order. The splitFour effect divides one character into four disjoint pieces, distinct from quad's four complete characters.
+- Preview, scrubbing and export share the deterministic renderer. Keep the measured positions, scale, direction and timing in src/reference-frames.js and src/full-composition-frames.js, including clipped or blank source poses. The reveal, quad, pattern and scroll presets are Opbouw, Groeiend kwartet, Schuivend patroon and Uitzoomend patroon. Preserve their existing IDs and version-1 project compatibility. Full patterns cover the output crop; the quartet keeps its centered group framing.
 - Source motion lasts 0.45 s at speed 1, except rings at 0.42 s. Block duration changes the cut, not the motion speed; longer blocks hold the final pose. Referentietempo restores duration and speed. New blocks default to 0.45 s; preserve stored durations.
 - Render cuts and loop boundaries must account for floating-point rounding. Keep existing regression coverage for blank source poses and repeated cuts.
 - MP4 is the primary export. Never silently substitute WebM. Keep the five-minute maximum consistent between UI and exporter.

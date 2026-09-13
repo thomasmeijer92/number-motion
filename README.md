@@ -1,6 +1,6 @@
 # Number Motion
 
-A browser-based editor for animated character sequences. Each block contains one Unicode grapheme (a letter, numeral or symbol) with its own motion, colors and timing; video export joins the blocks in order. The interface is currently in Dutch.
+A browser-based editor for animated character sequences. Choose one Unicode grapheme (a letter, numeral or symbol) per block, with its own motion, colors and timing. Animations can repeat that character in a composition; video export joins the blocks in order. The interface is currently in Dutch.
 
 ## Run locally
 
@@ -20,7 +20,16 @@ Open http://127.0.0.1:5173. The editor works entirely in the browser. It does no
 3. Add, duplicate or reorder blocks.
 4. Choose **Exporteer montage → Maak MP4 → Download MP4**.
 
-Twelve motion presets include stretching, rotating, zooming, moving, revealing and splitting one character into four pieces. Each preset draws one character; the split preset partitions that character rather than duplicating it.
+Twelve motion presets include stretching, rotating, zooming, moving, revealing and splitting. Four presets reproduce the full reference compositions using the selected character:
+
+- **Opbouw**: a straight bar builds into the character.
+- **Groeiend kwartet**: four complete copies grow and move together, with different orientations.
+- **Schuivend patroon**: repeated characters slide in staggered columns.
+- **Uitzoomend patroon**: groups of repeated characters shrink as their rows shift.
+
+The other presets keep their individual character motion. **In vieren delen** splits one character into four disjoint pieces. It is distinct from the four complete characters in **Groeiend kwartet**.
+
+The two patterns cover the selected video format; square and portrait crop the sides of the reference composition. The quartet stays centered. Size remains adjustable per block.
 
 New blocks last 0.45 seconds. At speed 1, the motion lasts 0.45 seconds, or 0.42 seconds for **Groeien**. **Referentietempo** restores that duration and speed. A longer block holds the final pose; a shorter block cuts the motion. Some motion profiles deliberately start or end outside the frame.
 
@@ -28,7 +37,7 @@ New blocks last 0.45 seconds. At speed 1, the motion lasts 0.45 seconds, or 0.42
 
 The **Teken** input accepts one visible grapheme and normalizes it to NFC. Letters, numerals and symbols must exist in Inter Medium: examples include `A`, `é`, `Ω`, `Ж`, `€`, `₿`, `↑` and `q́`. Whitespace, a standalone accent, multiple characters, unsupported emoji or CJK, and unsupported combinations show an error instead of using another font. A cluster is limited to 128 UTF-16 code units and safe canvas bounds. Short punctuation and symbols keep their height relative to Inter’s `0`; a dash is not enlarged to a full letter’s height. Letters and numerals retain the existing animation sizes.
 
-IME composition is allowed to finish before the character is committed. Invalid or unfinished input blocks playback, video export and JSON download; the last valid project remains in storage. Choose a quick digit or correct the input to continue. Existing version-1 projects keep their `digit` field and remain compatible.
+IME composition is allowed to finish before the character is committed. Invalid or unfinished input blocks playback, video export and JSON download; the last valid project remains in storage. Choose a quick digit or correct the input to continue. Existing version-1 projects keep their `digit` field and remain compatible. The four corrected presets retain their `reveal`, `quad`, `pattern` and `scroll` IDs, so saved projects use the full compositions while preserving their characters, colors and timing.
 
 ## Projects and examples
 
@@ -71,7 +80,7 @@ npm audit --audit-level=high
 
 Each change request gets its own branch and pull request. An independent review must be clean and CI must pass on the current commit before merge. See [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`AGENTS.md`](AGENTS.md). The application is not automatically deployed by CI.
 
-Main files: `src/App.jsx` (editor), `src/project.js` (storage/import), `src/renderer.js` (motion), `src/reference-frames.js` (sampled poses), `src/characters.js` (Unicode validation), `src/glyphs.js` (font loading and masks) and `src/export.js` (video encoding).
+Main files: `src/App.jsx` (editor), `src/project.js` (storage/import), `src/renderer.js` (motion), `src/reference-frames.js` (sampled poses), `src/full-compositions.js` (quartet and pattern compositions), `src/characters.js` (Unicode validation), `src/glyphs.js` (font loading and masks) and `src/export.js` (video encoding).
 
 ## License
 

@@ -4,7 +4,7 @@ export function CharacterInput({ id, value, state, onChange }) {
   const composing = useRef(false);
   const hintId = `character-hint-${id}`, errorId = `character-error-${id}`;
   return <div className="character-control">
-    <div className="section-label"><label htmlFor={`character-${id}`}>Teken</label><span>Precies één in beeld</span></div>
+    <div className="section-label"><label htmlFor={`character-${id}`}>Teken</label><span>Kies één teken</span></div>
     <input id={`character-${id}`} className="character-input" type="text" value={value}
       aria-invalid={Boolean(state.error)} aria-describedby={`${hintId}${state.error ? ` ${errorId}` : ''}`}
       autoComplete="off" autoCapitalize="off" spellCheck={false}

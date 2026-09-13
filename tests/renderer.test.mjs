@@ -65,7 +65,7 @@ test('fractional playback speed enters a blank source frame on its exact video f
   assert.equal(at.operations.some(([method]) => method === 'clip'), true);
 });
 
-test('every preset renders one numeral, optionally partitioned into four pieces, deterministically', () => {
+test('every preset deterministically renders its selected character composition', () => {
   for (const effect of EFFECTS) {
     for (let digit = 0; digit <= 9; digit += 1) {
       for (const [width, height] of [[1920, 1080], [1080, 1920], [1080, 1080]]) {
@@ -76,13 +76,16 @@ test('every preset renders one numeral, optionally partitioned into four pieces,
           renderScene(first, scene, time);
           renderScene(second, scene, time);
           assert.deepEqual(first.operations, second.operations);
-          const pieces = effect.id === 'splitFour' && time > 0 && time < 0.396 ? 4 : 1;
+          const pieces = effect.id === 'quad' ? 4 : effect.id === 'pattern' ? 42 : effect.id === 'scroll' ? 46
+            : effect.id === 'reveal' && time <= 0.18 ? 0
+              : effect.id === 'splitFour' && time > 0 && time < 0.396 ? 4 : 1;
+          const bar = effect.id === 'reveal' && time >= 0.03 && time <= 0.18 ? 1 : 0;
           assert.equal(first.operations.filter(([method]) => method === 'drawImage').length, pieces,
             `${effect.id}: digit ${digit} at ${time} has an unexpected number of pieces`);
-          assert.equal(first.operations.filter(([method]) => method === 'fillRect').length, 1,
-            `${effect.id} must only paint the background before its glyph`);
+          assert.equal(first.operations.filter(([method]) => method === 'fillRect').length, 1 + bar,
+            `${effect.id} must only paint its background and optional construction bar`);
           const coloredPaint = first.operations.filter(([method]) => ['fillRect', 'drawImage'].includes(method));
-          assert.deepEqual(coloredPaint.map(([, color]) => color), [scene.bg, ...Array(pieces).fill(scene.fg)]);
+          assert.deepEqual(coloredPaint.map(([, color]) => color), [scene.bg, ...Array(pieces + bar).fill(scene.fg)]);
         }
       }
     }
@@ -211,4 +214,30 @@ test('short punctuation retains its Inter-relative height in both whole and spli
     assert.ok(pieces.every(piece => Math.abs(piece[10] * 2 - wholeDraw[6]) < 1e-8));
     assert.equal(numberDraw[2].characterScale, 1);
   }
+});
+
+
+test('full compositions share preview/export poses for Unicode, speeds, colors and orientations', () => {
+  for (const effect of ['quad', 'pattern', 'scroll', 'reveal']) for (const digit of ['0', 'A', 'Ω', '—']) {
+    for (const time of [0, 0.12, 0.21, 0.24, 0.5]) {
+      const scene = { ...DEFAULT_SCENES[0], effect, digit, fg: '#123456', bg: '#abcdef', duration: 0.5 };
+      const preview = context(), exportFrame = context();
+      renderScene(preview, scene, time); renderProject(exportFrame, [scene], time);
+      assert.deepEqual(preview.operations, exportFrame.operations);
+      assert.ok(preview.operations.filter(([method]) => method === 'drawImage').every(([, color]) => color === scene.fg));
+    }
+  }
+});
+
+test('Opbouw begins blank, builds a solid bar, then unfolds one naturally proportioned character', () => {
+  const scene = { ...DEFAULT_SCENES[0], effect: 'reveal', digit: '2' };
+  const blank = context(1400, 788), bar = context(1400, 788), end = context(1400, 788);
+  renderScene(blank, scene, 0); renderScene(bar, scene, 0.09); renderScene(end, scene, 0.45);
+  assert.equal(blank.operations.filter(([method]) => ['drawImage', 'fillRect'].includes(method)).length, 1);
+  assert.deepEqual(bar.operations.filter(([method]) => method === 'fillRect').at(-1).slice(2), [372, 278, 711, 120]);
+  assert.equal(bar.operations.some(([method]) => method === 'drawImage'), false);
+  const draw = end.operations.find(([method]) => method === 'drawImage');
+  assert.equal(draw[4], 64);
+  assert.equal(draw[6], 660);
+  assert.equal(draw[5] / draw[6], draw[2].width / draw[2].height);
 });

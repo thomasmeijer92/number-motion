@@ -5,7 +5,7 @@ Use Node.js 22 and install with `npm ci`. Start the editor with `npm run dev`.
 ## One request, one pull request
 
 1. Start a new branch from the latest `main` for each requested change.
-2. Keep the change focused. Preserve the reference motion, one numeral per block, and the shared preview/export renderer.
+2. Keep the change focused. Preserve the reference motion, one selected Unicode grapheme per block, and the shared preview/export renderer. The quartet and pattern presets repeat that selected character in the full composition; the split preset divides one character into four disjoint pieces.
 3. Run `npm run check`. For UI changes, inspect desktop and mobile. For rendering or export changes, inspect an actual exported video and its metadata.
 4. Open a pull request with the problem, behavior, verification and limitations.
 5. Have someone or an independent review agent inspect the current commit. Address every actionable finding and request another review when the change affects an earlier review.
