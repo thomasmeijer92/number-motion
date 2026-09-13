@@ -45,9 +45,9 @@ function browser(t) {
 
 test('rejects invalid dimensions and unknown formats before allocating browser resources', async () => {
   await assert.rejects(exportVideo({ ...options, width: 641 }), /even/);
-  await assert.rejects(exportVideo({ ...options, duration: 0 }), /seconden/);
+  await assert.rejects(exportVideo({ ...options, duration: 0 }), /seconds/);
   await assert.rejects(exportVideo({ ...options, fps: 61 }), /frames/);
-  await assert.rejects(exportVideo({ ...options, format: 'mov' }), /MP4 of WebM/);
+  await assert.rejects(exportVideo({ ...options, format: 'mov' }), /MP4 or WebM/);
 });
 
 test('an already cancelled export never renders', async () => {
@@ -62,7 +62,7 @@ test('unsupported MP4 reports an error without silently switching to WebM', asyn
   const state = browser(t);
   let recorderCreated = false;
   globals(t, { VideoEncoder: undefined, MediaRecorder: class { constructor() { recorderCreated = true; } } });
-  await assert.rejects(exportVideo(options), /MP4-export is hier niet beschikbaar/);
+  await assert.rejects(exportVideo(options), /MP4 export is not available here/);
   assert.equal(recorderCreated, false);
   assert.equal(state.canvases[0].width, 1);
   assert.equal(state.canvases[0].height, 1);
@@ -97,7 +97,7 @@ test('cancellation between batches releases every frame and samples exact frame 
 
 test('an encoder dropping frames fails instead of returning an incomplete MP4', async t => {
   const state = browser(t);
-  await assert.rejects(exportVideo({ ...options, duration: 0.35 }), /frames overgeslagen/);
+  await assert.rejects(exportVideo({ ...options, duration: 0.35 }), /skipped frames/);
   assert.equal(state.frames.length, 11);
   assert.equal(state.frames.at(-1).timestamp + state.frames.at(-1).duration, 350_000);
   assert.equal(state.frames.every(frame => frame.closed), true);

@@ -25,7 +25,7 @@ export function sampleFullComposition(effect, progress) {
 export function renderFullComposition(ctx, scene, progress, width, height, effect = scene.effect) {
   const poses = sampleFullComposition(effect, progress);
   const mask = getGlyph(scene.digit, scene.fg);
-  if (!mask) throw new Error('Het teken is nog niet geladen. Probeer opnieuw.');
+  if (!mask) throw new Error('The character has not loaded yet. Try again.');
   // Patterns cover the output crop in every aspect ratio. Fitting them by the
   // short edge would expose empty bands above/below the four-row zoom pattern
   // in portrait. The quartet remains a centered, independently sized group.

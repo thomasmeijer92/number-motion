@@ -9,17 +9,17 @@ let segmenter;
 export function inspectCharacter(value) {
   const text = typeof value === 'number' && Number.isInteger(value) && value >= 0 && value <= 9 ? String(value) : value;
   const invalid = error => ({ character: null, subset: null, error });
-  if (typeof text !== 'string' || !text.length) return invalid('Vul één teken in.');
-  if (text.length > MAX_CHARACTER_LENGTH) return invalid('Deze tekencombinatie is te lang.');
+  if (typeof text !== 'string' || !text.length) return invalid('Enter one character.');
+  if (text.length > MAX_CHARACTER_LENGTH) return invalid('This character combination is too long.');
   const character = text.normalize('NFC');
-  if (/[\p{White_Space}\p{Cc}\p{Cf}\p{Cs}]/u.test(character)) return invalid('Gebruik een zichtbaar teken zonder spaties of besturingstekens.');
-  if (typeof Intl.Segmenter !== 'function') return invalid('Deze browser kan samengestelde tekens niet controleren. Gebruik een recente browser.');
+  if (/[\p{White_Space}\p{Cc}\p{Cf}\p{Cs}]/u.test(character)) return invalid('Use a visible character without spaces or control characters.');
+  if (typeof Intl.Segmenter !== 'function') return invalid('This browser cannot validate combined characters. Use an up-to-date browser.');
   segmenter ||= new Intl.Segmenter('und', { granularity: 'grapheme' });
-  if (Array.from(segmenter.segment(character)).length !== 1) return invalid('Gebruik precies één teken per blok.');
-  if (/^\p{M}/u.test(character)) return invalid('Een accent heeft een letter nodig.');
+  if (Array.from(segmenter.segment(character)).length !== 1) return invalid('Use exactly one character per block.');
+  if (/^\p{M}/u.test(character)) return invalid('An accent needs a letter.');
   const points = Array.from(character, part => part.codePointAt(0));
   const subset = subsets.find(candidate => points.every(point => candidate.points.has(point)));
-  if (!subset) return invalid('Dit teken of deze combinatie is niet beschikbaar in Inter Medium.');
+  if (!subset) return invalid('This character or combination is not available in Inter Medium.');
   return { character, subset: subset.id, error: '' };
 }
 

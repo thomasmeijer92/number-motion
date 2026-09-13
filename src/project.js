@@ -3,17 +3,17 @@ import { normalizeCharacter } from './characters.js';
 
 export const STORAGE_KEY = 'number-motion-project-v1';
 export const uid = () => crypto.randomUUID();
-export const freshProject = () => ({ version: 1, name: 'Mijn motion reel', ratio: '16:9', scenes: DEFAULT_SCENES.map(scene => ({ ...scene, id: uid() })) });
+export const freshProject = () => ({ version: 1, name: 'My motion reel', ratio: '16:9', scenes: DEFAULT_SCENES.map(scene => ({ ...scene, id: uid() })) });
 const color = value => typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value);
 const number = (value, min, max) => typeof value === 'number' && Number.isFinite(value) && value >= min && value <= max;
 
 export function validateProject(value) {
-  if (!value || value.version !== 1 || !['16:9', '1:1', '9:16'].includes(value.ratio) || !Array.isArray(value.scenes) || value.scenes.length < 1 || value.scenes.length > 60) throw new Error('Kies een Number Motion-project met 1–60 blokken.');
+  if (!value || value.version !== 1 || !['16:9', '1:1', '9:16'].includes(value.ratio) || !Array.isArray(value.scenes) || value.scenes.length < 1 || value.scenes.length > 60) throw new Error('Choose a Number Motion project with 1–60 blocks.');
   const scenes = value.scenes.map(scene => {
-    if (!scene || !EFFECTS.some(effect => effect.id === scene.effect) || !color(scene.bg) || !color(scene.fg) || !number(scene.duration, 0.2, 10) || !number(scene.speed, 0.25, 3) || !number(scene.scale, 0.5, 1.5)) throw new Error('Dit project bevat ongeldige blokinstellingen.');
+    if (!scene || !EFFECTS.some(effect => effect.id === scene.effect) || !color(scene.bg) || !color(scene.fg) || !number(scene.duration, 0.2, 10) || !number(scene.speed, 0.25, 3) || !number(scene.scale, 0.5, 1.5)) throw new Error('This project contains invalid block settings.');
     return { id: uid(), digit: normalizeCharacter(scene.digit), effect: scene.effect, bg: scene.bg, fg: scene.fg, ...(color(scene.accent) ? { accent: scene.accent } : {}), ...(color(scene.centerColor) ? { centerColor: scene.centerColor } : {}), duration: scene.duration, speed: scene.speed, scale: scene.scale };
   });
-  return { version: 1, name: String(value.name || 'Mijn motion reel').slice(0, 60), ratio: value.ratio, scenes };
+  return { version: 1, name: String(value.name || 'Imported project').slice(0, 60), ratio: value.ratio, scenes };
 }
 
 export function loadProjectState(storage) {
@@ -22,13 +22,13 @@ export function loadProjectState(storage) {
     // Resolve the browser property here: access to localStorage itself may
     // throw, before getItem can run (for example when storage is blocked).
     const source = storage === undefined ? globalThis.localStorage : storage;
-    if (!source || typeof source.getItem !== 'function') throw new Error('Lokale opslag is niet beschikbaar.');
+    if (!source || typeof source.getItem !== 'function') throw new Error('Local storage is not available.');
     raw = source.getItem(STORAGE_KEY);
-    if (raw !== null && typeof raw !== 'string') throw new Error('Lokale opslag gaf een ongeldige waarde terug.');
+    if (raw !== null && typeof raw !== 'string') throw new Error('Local storage returned an invalid value.');
   } catch (error) {
     return {
       project: freshProject(), recoveryRaw: null,
-      storageError: error instanceof Error && error.message ? error.message : 'Het opgeslagen project kon niet worden gelezen.',
+      storageError: error instanceof Error && error.message ? error.message : 'The saved project could not be read.',
     };
   }
 

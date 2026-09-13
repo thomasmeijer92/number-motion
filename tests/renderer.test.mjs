@@ -194,8 +194,8 @@ test('Unicode preview and export use the same loaded cluster mask without numera
     assert.equal(draws.length, 1);
     assert.equal(draws[0][2].character, digit);
   }
-  assert.throws(() => renderScene(context(), { ...DEFAULT_SCENES[0], digit: '😀' }), /niet beschikbaar/);
-  assert.throws(() => renderScene(context(), { ...DEFAULT_SCENES[0], digit: 'Б' }), /nog niet geladen/);
+  assert.throws(() => renderScene(context(), { ...DEFAULT_SCENES[0], digit: '😀' }), /not available/);
+  assert.throws(() => renderScene(context(), { ...DEFAULT_SCENES[0], digit: 'Б' }), /has not loaded yet/);
 });
 
 

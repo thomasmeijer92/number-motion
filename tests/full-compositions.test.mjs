@@ -171,6 +171,6 @@ test('all members use the selected Unicode mask and color, with punctuation scal
         near(draw.height, (poses[i].width || poses[i].height) * (digit === '-' ? 10 / 72 : 1));
       }
     }
-    assert.throws(() => renderFullComposition(context(), scene(effect, 'Б'), 0, 1400, 788), /nog niet geladen/);
+    assert.throws(() => renderFullComposition(context(), scene(effect, 'Б'), 0, 1400, 788), /not loaded yet/);
   }
 });

@@ -9,27 +9,27 @@ export const SOURCE_DURATION = { single: 0.45, duo: 0.45, orbit: 0.45, quad: 0.4
 // All animation is derived from the supplied time, so scrubbing and exported
 // frames use precisely the same drawing code as the live preview.
 export const EFFECTS = [
-  { id: 'single', label: 'Stretch', description: 'De gemeten stretch en settling van de originele 1.' },
-  { id: 'duo', label: 'Draaien en afremmen', description: 'De draaiende inzet van één originele 2.' },
-  { id: 'orbit', label: 'Zoom-explosie', description: 'De versnellende zoom en draaiing van één originele 3.' },
-  { id: 'quad', label: 'Groeiend kwartet', description: 'Vier exemplaren van je teken groeien en bewegen samen, zoals de originele 4.' },
-  { id: 'pattern', label: 'Schuivend patroon', description: 'Je teken herhaalt zich in verschoven kolommen die omlaag schuiven, zoals het originele 5-patroon.' },
-  { id: 'scatter', label: 'Boogbeweging', description: 'De doorgaande cirkelbeweging van één originele 6.' },
-  { id: 'reveal', label: 'Opbouw', description: 'Een balk groeit, verschuift en ontvouwt zich tot je teken, zoals de originele 7.' },
-  { id: 'cluster', label: 'Versnellend draaien', description: 'Eén cijfer draait naar buiten zoals in de originele 8-groep.' },
-  { id: 'spinSweep', label: 'Draaien en schuiven', description: 'Een versterkte variant: een ruime draai met een brede verplaatsing van links naar rechts.' },
-  { id: 'splitFour', label: 'In vieren delen', description: 'Vier stukken van één cijfer schuiven uiteen en komen weer samen.' },
-  { id: 'scroll', label: 'Uitzoomend patroon', description: 'Groepjes van je teken schuiven per rij en zoomen uit, zoals het originele 9-patroon.' },
-  { id: 'rings', label: 'Groeien', description: 'De snelle groei van de centrale 0 in het origineel.' },
+  { id: 'single', label: 'Stretch', description: 'The measured stretch and settling of the original 1.' },
+  { id: 'duo', label: 'Spin and settle', description: 'The spinning entrance of a single original 2.' },
+  { id: 'orbit', label: 'Zoom burst', description: 'The accelerating zoom and rotation of a single original 3.' },
+  { id: 'quad', label: 'Growing quartet', description: 'Four copies of your character grow and move together, like the original 4.' },
+  { id: 'pattern', label: 'Sliding pattern', description: 'Your character repeats in staggered columns that slide down, like the original 5 pattern.' },
+  { id: 'scatter', label: 'Arc motion', description: 'The continuous circular movement of a single original 6.' },
+  { id: 'reveal', label: 'Build-up', description: 'A bar grows, shifts and unfolds into your character, like the original 7.' },
+  { id: 'cluster', label: 'Accelerating spin', description: 'One character spins outward, like the original group of 8s.' },
+  { id: 'spinSweep', label: 'Spin and slide', description: 'An amplified variation: a wide turn with a sweeping move from left to right.' },
+  { id: 'splitFour', label: 'Split into four', description: 'Four pieces of one character slide apart and come back together.' },
+  { id: 'scroll', label: 'Zoom-out pattern', description: 'Groups of your character shift by row and zoom out, like the original 9 pattern.' },
+  { id: 'rings', label: 'Grow', description: 'The rapid growth of the central 0 in the original.' },
 ];
 
 export const PALETTES = [
-  { name: 'Zonnegeel', bg: '#FFBB00', fg: '#2A1200', accent: '#009D8B' },
-  { name: 'Kobaltblauw', bg: '#144CFD', fg: '#CDD5D5', accent: '#FFBB00' },
-  { name: 'Signaalrood', bg: '#FF2624', fg: '#2A1200', accent: '#CDD5D5' },
-  { name: 'Lagune', bg: '#009D8B', fg: '#2A1200', accent: '#FFBB00' },
+  { name: 'Sunshine', bg: '#FFBB00', fg: '#2A1200', accent: '#009D8B' },
+  { name: 'Cobalt blue', bg: '#144CFD', fg: '#CDD5D5', accent: '#FFBB00' },
+  { name: 'Signal red', bg: '#FF2624', fg: '#2A1200', accent: '#CDD5D5' },
+  { name: 'Lagoon', bg: '#009D8B', fg: '#2A1200', accent: '#FFBB00' },
   { name: 'Mist', bg: '#CDD5D5', fg: '#2A1200', accent: '#144CFD' },
-  { name: 'Nacht', bg: '#320E00', fg: '#009D8B', accent: '#FFBB00' },
+  { name: 'Night', bg: '#320E00', fg: '#009D8B', accent: '#FFBB00' },
 ];
 
 const DEFAULTS = [['1', 'single', 0], ['2', 'duo', 2]];
@@ -74,7 +74,7 @@ export function getSceneAtTime(scenes = [], time = 0) {
 function glyph(ctx, digit, x, y, height, color, angle = 0, stretchX = 1, stretchY = 1) {
   if (height <= 0.1) return;
   const mask = getGlyph(digit, color);
-  if (!mask) throw new Error('Het teken is nog niet geladen. Probeer opnieuw.');
+  if (!mask) throw new Error('The character has not loaded yet. Try again.');
   height *= mask.characterScale;
   const width = height * mask.width / mask.height;
   ctx.save();
@@ -192,7 +192,7 @@ function renderSplitFour(ctx, s, p, t, w, h) {
     return;
   }
   const mask = getGlyph(s.digit, s.fg);
-  if (!mask) throw new Error('Het teken is nog niet geladen. Probeer opnieuw.');
+  if (!mask) throw new Error('The character has not loaded yet. Try again.');
   const characterHeight = height * mask.characterScale;
   const width = characterHeight * mask.width / mask.height;
   ctx.imageSmoothingEnabled = true;
@@ -223,7 +223,7 @@ export function renderScene(ctx, scene, localTime = 0, width = ctx.canvas.width,
     digit: normalizeCharacter(scene?.digit),
     bg: scene?.bg || '#FFBB00', fg: scene?.fg || '#2A1200',
   };
-  if (!hasGlyphs([s.digit])) throw new Error('Het teken is nog niet geladen. Probeer opnieuw.');
+  if (!hasGlyphs([s.digit])) throw new Error('The character has not loaded yet. Try again.');
   ctx.save();
   ctx.globalAlpha = 1;
   ctx.globalCompositeOperation = 'source-over';

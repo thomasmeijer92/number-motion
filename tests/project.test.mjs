@@ -76,7 +76,7 @@ test('missing storage creates an unsaved default project without a recovery warn
   const saved = storedProject(null);
   const result = loadProjectState(saved.storage);
   assert.equal(result.project.version, 1);
-  assert.equal(result.project.name, 'Mijn motion reel');
+  assert.equal(result.project.name, 'My motion reel');
   assert.equal(result.recoveryRaw, null);
   assert.equal(result.storageError, null);
   saved.assertUnchanged();
@@ -86,7 +86,7 @@ test('invalid JSON, including empty stored text, remains byte-for-byte recoverab
   for (const raw of ['\n  {"name":"onaf werk",\n', '']) {
     const saved = storedProject(raw);
     const result = loadProjectState(saved.storage);
-    assert.equal(result.project.name, 'Mijn motion reel');
+    assert.equal(result.project.name, 'My motion reel');
     assert.equal(result.recoveryRaw, raw);
     assert.notEqual(result.recoveryRaw, null);
     assert.equal(result.storageError, null);
