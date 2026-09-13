@@ -17,7 +17,7 @@ test('font failures block missing masks and retry only the failed subset', async
     }, addFont: face => added.push(face.family),
   }));
   await store.loadGlyphs(['A']);
-  await assert.rejects(store.loadGlyphs(['A', 'Ω']), /Inter Medium kon niet worden geladen/);
+  await assert.rejects(store.loadGlyphs(['A', 'Ω']), /Inter Medium could not be loaded/);
   assert.equal(store.hasGlyphs(['A', 'Ω']), false);
   assert.equal(store.getGlyph('Ω', '#000000'), null);
   failGreek = false;
@@ -47,7 +47,7 @@ test('one cached mask uses the complete cluster and preserves the same shape acr
 test('pending fonts cannot expose a mask, and unsupported content never reaches a font or canvas', async () => {
   let resolveFont, calls = 0;
   const store = createGlyphStore(environment({ createFontFace: () => { calls += 1; return { load: () => new Promise(resolve => { resolveFont = resolve; }) }; } }));
-  await assert.rejects(store.loadGlyphs(['😀']), /niet beschikbaar/);
+  await assert.rejects(store.loadGlyphs(['😀']), /not available/);
   assert.equal(calls, 0);
   const pending = store.loadGlyphs(['A']);
   assert.equal(store.hasGlyphs(['A']), false);
@@ -59,10 +59,10 @@ test('pending fonts cannot expose a mask, and unsupported content never reaches 
 
 test('blank or oversized raster bounds fail before they can be exported', async () => {
   const blank = createGlyphStore(environment({ createCanvas: () => fakeCanvas({ blank: true }) }));
-  await assert.rejects(blank.loadGlyphs(['A']), /geen zichtbare vorm/);
+  await assert.rejects(blank.loadGlyphs(['A']), /no visible shape/);
   assert.equal(blank.hasGlyphs(['A']), false);
   const oversized = createGlyphStore(environment({ createCanvas: () => fakeCanvas({ metrics: { actualBoundingBoxLeft: 0, actualBoundingBoxRight: 5000, actualBoundingBoxAscent: 72, actualBoundingBoxDescent: 0 } }) }));
-  await assert.rejects(oversized.loadGlyphs(['A']), /te groot/);
+  await assert.rejects(oversized.loadGlyphs(['A']), /too large/);
   assert.equal(oversized.hasGlyphs(['A']), false);
 });
 
@@ -84,7 +84,7 @@ test('wide punctuation fits the mask cache by proportional scaling instead of be
 test('a timed-out font has a retryable error and never becomes ready by resolving late', async () => {
   let resolveFont, added = 0;
   const store = createGlyphStore(environment({ timeout: 5, createFontFace: () => ({ load: () => new Promise(resolve => { resolveFont = resolve; }) }), addFont: () => { added += 1; } }));
-  await assert.rejects(store.loadGlyphs(['A']), /duurt te lang/);
+  await assert.rejects(store.loadGlyphs(['A']), /taking too long/);
   resolveFont({}); await new Promise(resolve => setImmediate(resolve));
   assert.equal(added, 0);
   assert.equal(store.hasGlyphs(['A']), false);

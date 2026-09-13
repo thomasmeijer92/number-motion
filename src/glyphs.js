@@ -17,18 +17,18 @@ const FONT_SIZE = 1024, MASK_HEIGHT = 700, MAX_CANVAS_SIDE = 4096;
 function withTimeout(promise, milliseconds) {
   let timer;
   return Promise.race([promise, new Promise((_, reject) => {
-    timer = setTimeout(() => reject(new Error('Inter Medium laden duurt te lang. Probeer opnieuw.')), milliseconds);
+    timer = setTimeout(() => reject(new Error('Inter Medium is taking too long to load. Try again.')), milliseconds);
   })]).finally(() => clearTimeout(timer));
 }
 
 function rasterize(character, family, referenceFamily, createCanvas) {
   const canvas = createCanvas();
   let ctx = canvas.getContext('2d', { willReadFrequently: true });
-  if (!ctx) throw new Error('Deze browser kan geen tekenmasker maken.');
+  if (!ctx) throw new Error('This browser cannot create a character mask.');
   ctx.font = `500 ${FONT_SIZE}px "${referenceFamily}"`;
   const reference = ctx.measureText('0');
   const referenceHeight = reference.actualBoundingBoxAscent + reference.actualBoundingBoxDescent;
-  if (!Number.isFinite(referenceHeight) || referenceHeight <= 0) throw new Error('De Inter-lettergrootte kon niet worden bepaald.');
+  if (!Number.isFinite(referenceHeight) || referenceHeight <= 0) throw new Error('The Inter font size could not be determined.');
   const font = `500 ${FONT_SIZE}px "${family}"`;
   ctx.font = font;
   const { actualBoundingBoxLeft: left, actualBoundingBoxRight: right,
@@ -36,7 +36,7 @@ function rasterize(character, family, referenceFamily, createCanvas) {
   const width = Math.ceil(left + right) + 8, height = Math.ceil(ascent + descent) + 8;
   if (![left, right, ascent, descent, width, height].every(Number.isFinite)
     || width <= 8 || height <= 8 || width > MAX_CANVAS_SIDE || height > MAX_CANVAS_SIDE) {
-    throw new Error('Dit teken heeft geen bruikbare vorm of is te groot om te tekenen.');
+    throw new Error('This character has no usable shape or is too large to draw.');
   }
   canvas.width = width; canvas.height = height;
   ctx = canvas.getContext('2d', { willReadFrequently: true });
@@ -49,7 +49,7 @@ function rasterize(character, family, referenceFamily, createCanvas) {
       x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x + 1); y1 = Math.max(y1, y + 1);
     }
   }
-  if (x1 <= x0 || y1 <= y0) throw new Error('Dit teken heeft geen zichtbare vorm in Inter Medium.');
+  if (x1 <= x0 || y1 <= y0) throw new Error('This character has no visible shape in Inter Medium.');
   // A dash or underscore can be very wide relative to its ink height. Scale
   // both axes uniformly to fit the cache limit rather than rejecting punctuation.
   const scale = Math.min(MASK_HEIGHT / (y1 - y0), MAX_CANVAS_SIDE / (x1 - x0));
@@ -83,7 +83,7 @@ export function createGlyphStore(environment = {}) {
           const loaded = await withTimeout(face.load(), environment.timeout ?? 15_000);
           addFont(loaded); fonts.set(subset, family); return family;
         } catch (error) {
-          throw new Error(error?.message?.includes('duurt te lang') ? error.message : 'Inter Medium kon niet worden geladen. Probeer opnieuw.');
+          throw new Error(error?.message?.includes('taking too long') ? error.message : 'Inter Medium could not be loaded. Try again.');
         } finally { fontPending.delete(subset); }
       });
       fontPending.set(subset, operation);

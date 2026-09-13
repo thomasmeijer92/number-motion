@@ -3,7 +3,7 @@
 // in real time because MediaRecorder does not accept frame timestamps.
 
 function abortError() {
-  return new DOMException('Export geannuleerd.', 'AbortError');
+  return new DOMException('Export cancelled.', 'AbortError');
 }
 
 function checkAbort(signal) {
@@ -19,7 +19,7 @@ function bounded(promise, signal, timeout = 30_000) {
       callback(value);
     };
     const abort = () => finish(reject, abortError());
-    const timer = setTimeout(() => finish(reject, new Error('De video-export reageert niet. Probeer opnieuw of kies een lagere resolutie.')), timeout);
+    const timer = setTimeout(() => finish(reject, new Error('Video export is not responding. Try again or choose a lower resolution.')), timeout);
     signal?.addEventListener('abort', abort, { once: true });
     Promise.resolve(promise).then(value => finish(resolve, value), error => finish(reject, error));
   });
@@ -43,20 +43,20 @@ function pause(milliseconds, signal) {
 
 function validate({ width, height, fps, duration, format, renderFrame }) {
   if (![width, height].every(value => Number.isInteger(value) && value >= 2 && value <= 4096)) {
-    throw new Error('Kies een videoformaat van 2 tot 4096 pixels per zijde.');
+    throw new Error('Choose video dimensions between 2 and 4096 pixels per side.');
   }
   if (format === 'mp4' && (width % 2 || height % 2)) {
-    throw new Error('Voor MP4 moeten breedte en hoogte even aantallen pixels zijn.');
+    throw new Error('MP4 width and height must be even numbers of pixels.');
   }
-  if (!Number.isInteger(fps) || fps < 1 || fps > 60) throw new Error('Kies 1 tot 60 frames per seconde.');
-  if (!Number.isFinite(duration) || duration < 0.1 || duration > 300) throw new Error('De video moet tussen 0,1 en 300 seconden duren.');
-  if (!['mp4', 'webm'].includes(format)) throw new Error('Kies MP4 of WebM als videoformaat.');
-  if (typeof renderFrame !== 'function') throw new TypeError('Er ontbreekt een functie om videoframes te tekenen.');
+  if (!Number.isInteger(fps) || fps < 1 || fps > 60) throw new Error('Choose between 1 and 60 frames per second.');
+  if (!Number.isFinite(duration) || duration < 0.1 || duration > 300) throw new Error('The video must last between 0.1 and 300 seconds.');
+  if (!['mp4', 'webm'].includes(format)) throw new Error('Choose MP4 or WebM as the video format.');
+  if (typeof renderFrame !== 'function') throw new TypeError('The function for rendering video frames is missing.');
 }
 
 async function findAvcConfig(width, height, fps, signal) {
   if (typeof VideoEncoder === 'undefined' || typeof VideoFrame === 'undefined') {
-    throw new Error('MP4-export is hier niet beschikbaar. Open deze tool in een recente Chrome- of Edge-browser, of kies WebM.');
+    throw new Error('MP4 export is not available here. Open this tool in an up-to-date Chrome or Edge browser, or choose WebM.');
   }
   const bitrate = Math.min(32_000_000, Math.max(2_000_000, Math.round(width * height * fps * 0.16)));
   // Test actual device support: the presence of WebCodecs alone is insufficient.
@@ -76,7 +76,7 @@ async function findAvcConfig(width, height, fps, signal) {
       }
     }
   }
-  throw new Error('Deze browser kan geen MP4 in dit formaat maken. Kies een lagere resolutie, een recente Chrome- of Edge-browser, of WebM.');
+  throw new Error('This browser cannot create an MP4 at these dimensions. Choose a lower resolution, an up-to-date Chrome or Edge browser, or WebM.');
 }
 
 function draw(ctx, renderFrame, time, width, height) {
@@ -154,9 +154,9 @@ async function exportMp4(options, canvas, ctx) {
     await bounded(encoder.flush(), signal);
     checkAbort(signal);
     if (failure) throw failure;
-    if (outputCount !== frameCount) throw new Error('De encoder heeft frames overgeslagen. Probeer opnieuw met een lagere resolutie.');
+    if (outputCount !== frameCount) throw new Error('The encoder skipped frames. Try again at a lower resolution.');
     muxer.finalize();
-    if (!target.buffer?.byteLength) throw new Error('De MP4-export bevat geen videodata.');
+    if (!target.buffer?.byteLength) throw new Error('The MP4 export contains no video data.');
     const blob = new Blob([target.buffer], { type: 'video/mp4' });
     onProgress?.(1);
     return { blob, extension: 'mp4', mimeType: 'video/mp4' };
@@ -172,13 +172,13 @@ async function exportMp4(options, canvas, ctx) {
 async function exportWebm(options, canvas, ctx) {
   const { width, height, fps, duration, renderFrame, onProgress, signal } = options;
   if (typeof MediaRecorder === 'undefined' || typeof canvas.captureStream !== 'function') {
-    throw new Error('Deze browser ondersteunt geen WebM-export. Gebruik een recente Chrome- of Edge-browser.');
+    throw new Error('This browser does not support WebM export. Use an up-to-date Chrome or Edge browser.');
   }
   const mimeType = ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm']
     .find(type => MediaRecorder.isTypeSupported(type));
-  if (!mimeType) throw new Error('Deze browser heeft geen WebM-encoder. Probeer MP4 of open de tool in Chrome of Edge.');
+  if (!mimeType) throw new Error('This browser has no WebM encoder. Try MP4 or open the tool in Chrome or Edge.');
   const checkVisibility = () => {
-    if (document.visibilityState === 'hidden') throw new Error('Houd dit tabblad zichtbaar tijdens WebM-export. Probeer opnieuw of kies MP4.');
+    if (document.visibilityState === 'hidden') throw new Error('Keep this tab visible during WebM export. Try again or choose MP4.');
   };
   checkVisibility();
   draw(ctx, renderFrame, 0, width, height);
@@ -192,17 +192,17 @@ async function exportWebm(options, canvas, ctx) {
   try {
     const track = stream.getVideoTracks()[0];
     if (!track || typeof track.requestFrame !== 'function') {
-      throw new Error('Deze browser kan geen gecontroleerde WebM-frames opnemen. Kies MP4 of open de tool in Chrome of Edge.');
+      throw new Error('This browser cannot record individual WebM frames. Choose MP4 or open the tool in Chrome or Edge.');
     }
     recorder = new MediaRecorder(stream, {
       mimeType,
       videoBitsPerSecond: Math.min(24_000_000, Math.max(2_000_000, Math.round(width * height * fps * 0.16))),
     });
-    if (!recorder.mimeType.startsWith('video/webm')) throw new Error('De browser levert geen geldig WebM-formaat.');
+    if (!recorder.mimeType.startsWith('video/webm')) throw new Error('The browser did not produce a valid WebM format.');
     const stopped = new Promise((resolve, reject) => {
       recorder.onstop = resolve;
       recorder.onerror = event => {
-        failure = event.error || new Error('De WebM-opname is mislukt.');
+        failure = event.error || new Error('WebM recording failed.');
         reject(failure);
       };
     });
@@ -220,9 +220,9 @@ async function exportWebm(options, canvas, ctx) {
       await pause(deadline - performance.now(), signal);
       checkVisibility();
       if (failure) throw failure;
-      if (recorder.state !== 'recording') throw new Error('De WebM-opname is onverwacht gestopt.');
+      if (recorder.state !== 'recording') throw new Error('WebM recording stopped unexpectedly.');
       if (performance.now() - deadline > 250) {
-        throw new Error('Deze WebM-export loopt achter. Kies een lagere resolutie of gebruik MP4 voor exacte timing.');
+        throw new Error('This WebM export is falling behind. Choose a lower resolution or use MP4 for exact timing.');
       }
       draw(ctx, renderFrame, index / fps, width, height);
       track.requestFrame();
@@ -235,7 +235,7 @@ async function exportWebm(options, canvas, ctx) {
     checkAbort(signal);
     if (failure) throw failure;
     const blob = new Blob(chunks, { type: recorder.mimeType });
-    if (!blob.size) throw new Error('De WebM-export bevat geen videodata.');
+    if (!blob.size) throw new Error('The WebM export contains no video data.');
     onProgress?.(1);
     return { blob, extension: 'webm', mimeType: recorder.mimeType };
   } finally {
@@ -266,7 +266,7 @@ export async function exportVideo({ width, height, fps = 30, duration, format = 
   canvas.width = width;
   canvas.height = height;
   const ctx = canvas.getContext('2d', { alpha: false });
-  if (!ctx) throw new Error('Er kon geen canvas worden gemaakt voor de video-export.');
+  if (!ctx) throw new Error('A canvas could not be created for video export.');
   try {
     return format === 'mp4' ? await exportMp4(options, canvas, ctx) : await exportWebm(options, canvas, ctx);
   } finally {
